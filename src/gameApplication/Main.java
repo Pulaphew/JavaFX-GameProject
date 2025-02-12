@@ -1,26 +1,38 @@
 package gameApplication;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import pane.*;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // Load the FXML file
-        Parent root = FXMLLoader.load(getClass().getResource("/fxmlsrc/gameplayFXML.fxml"));
+    public void start(Stage primaryStage) {
+        try {
+            // Create game components
+            PlayerPane playerPane = new PlayerPane();
+            EnemyPane enemyPane = new EnemyPane();
+            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane();
 
-        // Create the scene with the root layout
-        Scene scene = new Scene(root, 1360, 768);
+            // Create GameBattlePane (which includes the background)
+            GameBattlePane gameBattlePane = new GameBattlePane(playerPane, enemyPane, gameMenuBattlePane);
 
-        // Set up the primary stage
-        primaryStage.setTitle("Turn-Based Game");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+            // Root pane
+            Pane root = new Pane();
+            root.getChildren().add(gameBattlePane);
+
+            // Set up the scene
+            Scene scene = new Scene(root, 1360, 768);
+            primaryStage.setTitle("Battle System");
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error loading the game.");
+        }
     }
 
     public static void main(String[] args) {

@@ -13,6 +13,7 @@ public class Narong extends Enemy implements PoisonousPower {
 		super(" Narongdech The DigLo ", maxHealth, attackPower);
 		// set default as 10
 		this.setPoisonDamage(10);
+		this.setAttackAccuracy(0.4);
 	}
 
 	@Override

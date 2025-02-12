@@ -13,6 +13,7 @@ public class Nattee extends Enemy implements HealingPower {
 	public Nattee(int maxHealth, int attackPower) {
 		super(" Nattee The DataAlgo ", maxHealth, attackPower);
 		this.setHealingCounter(0);
+		this.setAttackAccuracy(0.2);
 	}
 
 	@Override

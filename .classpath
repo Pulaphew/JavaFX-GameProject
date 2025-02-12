@@ -5,7 +5,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="fxmlsrc"/>
+	<classpathentry excluding="imagesrc/|imagesrc/|imagesrc/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/imagesrc"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,9 +1,12 @@
 package entity;
 
 public abstract class Enemy extends Entity {
-
+	
+	private double attackAccuracy ;
+	
 	public Enemy(String name, int maxHealth, int attackPower) {
 		super(name, maxHealth, attackPower);
+		this.setAttackAccuracy(0.2);
 	}
 
 	@Override
@@ -13,5 +16,15 @@ public abstract class Enemy extends Entity {
 				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
 				+ "]";
 	}
+
+	public double getAttackAccuracy() {
+		return attackAccuracy;
+	}
+
+	public void setAttackAccuracy(double attackAccuracy) {
+		this.attackAccuracy = attackAccuracy;
+	}
+	
+	
 
 }

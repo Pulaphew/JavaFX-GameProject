@@ -55,6 +55,17 @@ public class Player extends Entity implements UltimatePower {
 			System.out.println("Deal Damage To " + target.getName() + " total " + dealDamage + " damage.");
 		}
 	}
+	
+	public void evade(Enemy enemy) {
+		double evadeChance = rand.nextDouble();
+		if(evadeChance > enemy.getAttackAccuracy()) {
+			System.out.println("Evade Success!!");
+		}
+		else {
+			System.out.println("Evade Fail.");
+			this.takeDamage(enemy.getAttackPower());
+		}
+	}
 
 	public void applyPoison() {
 		if (!isPoisoned) {

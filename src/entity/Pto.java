@@ -17,6 +17,17 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 		this.setUltimateTurnCount(0);
 		this.setImmortal(false);
 		this.setImmorTalTurnCount(0);
+		this.setAttackAccuracy(0.6);
+	}
+	
+	@Override
+	public void takeDamage(int damage) {
+		if(this.isImmortal()) {
+			System.out.println(this.getName() + " is immortal right now! no damage taken.");
+		}
+		else {
+			this.setCurrentHealth(this.getCurrentHealth() - damage);
+		}
 	}
 
 	@Override
