@@ -1,5 +1,8 @@
-package pane;
+package gui;
 
+import entity.Enemy;
+import entity.Player;
+import gamelogic.AttackZone;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -15,6 +18,9 @@ import javafx.util.Duration;
 
 public class GameMenuBattlePane extends Pane {
 
+	private Player player ;
+	private Enemy enemy ;
+	
 	private HBox menuButton ;
 	private SliderPane sliderPane ;
 	private SlideBarPane slideBarPane ;
@@ -81,11 +87,19 @@ public class GameMenuBattlePane extends Pane {
 		
 		this.getChildren().addAll(slideBarPane,sliderPane) ;
 		
-		slideAnimation = new TranslateTransition(Duration.seconds(1),sliderPane);
+		int speed = 1 ;
+		slideAnimation = new TranslateTransition(Duration.seconds(speed),sliderPane);
 		slideAnimation.setToX(1039);
 		slideAnimation.setCycleCount(1);
 		slideAnimation.play();
 		
+		// if animation finish , return to game menu
+		slideAnimation.setOnFinished(e -> {
+			PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+			delay.setOnFinished(ev -> returnToGameMenu()) ;
+			delay.play();
+		});
+			
 		Scene scene = this.getScene() ;
 		if(scene != null) {
 			scene.setOnKeyPressed(event -> {
@@ -99,6 +113,13 @@ public class GameMenuBattlePane extends Pane {
 	private void stopSlider() {
 		slideAnimation.stop();
 		
+		//check position x of Slider that player was press key A 
+		int SliderPos = (int) sliderPane.getTranslateX() ;
+		System.out.println("Attack at X: " + SliderPos);
+		
+		AttackZone SliderZone = checkZoneSlider(SliderPos) ;
+		System.out.println("Zone that Slider stop is : " + SliderZone);
+		
 		//delay before return to GameMenu
 		PauseTransition delay = new PauseTransition(Duration.seconds(1)) ;
 		delay.setOnFinished(e -> returnToGameMenu());
@@ -109,6 +130,20 @@ public class GameMenuBattlePane extends Pane {
 		this.getChildren().removeAll(slideBarPane,sliderPane) ;
 		menuButton.setVisible(true);
 		isAttackingProgress = false ;
+	}
+	
+	private AttackZone checkZoneSlider(double SliderPos) {
+		AttackZone res = AttackZone.MISS ;
+		if((SliderPos >= 0 && SliderPos <= 297) || (SliderPos >= 746 && SliderPos <= 1039)) {
+			res = AttackZone.RED ;
+		}
+		else if((SliderPos >= 298 && SliderPos <= 476) || (SliderPos >= 567 && SliderPos <= 745)) {
+			res = AttackZone.YELLOW ;
+		}
+		else if(SliderPos >= 477 && SliderPos <= 566) {
+			res = AttackZone.GREEN ;
+		}
+		return res ;
 	}
 }
 

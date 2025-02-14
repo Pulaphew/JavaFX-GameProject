@@ -1,4 +1,4 @@
-package pane;
+package gui;
 
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -25,7 +25,7 @@ public class GameBattlePane extends AnchorPane {
 		ImageView backgroundImage = new ImageView();
 		backgroundImage.setFitWidth(1360);
 		backgroundImage.setFitHeight(768);
-		// edit bg image from here
+		// edit background image from here
 		String image_path = ClassLoader.getSystemResource("croissantTestImage.jpg").toString();
 		backgroundImage.setImage(new Image(image_path));
 		backgroundPane.getChildren().add(backgroundImage);

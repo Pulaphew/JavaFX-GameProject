@@ -1,4 +1,4 @@
-package pane;
+package gui;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
