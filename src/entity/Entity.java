@@ -1,5 +1,6 @@
 package entity;
 
+
 public abstract class Entity {
 
 	// field
@@ -18,7 +19,6 @@ public abstract class Entity {
 
 	// Player will lose if take damage until hp = 0
 	// while Enemy take damage until hp = 0 Player will win
-	public abstract void attack(Entity target);
 	
 	public void takeDamage(int damage) {
 		this.setCurrentHealth(this.getCurrentHealth() - damage);

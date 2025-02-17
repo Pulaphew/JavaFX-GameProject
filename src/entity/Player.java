@@ -3,6 +3,8 @@ package entity;
 import java.util.Random;
 
 import enemyAbility.UltimatePower;
+import gamelogic.AttackZone;
+import gui.EnemyPane;
 
 public class Player extends Entity implements UltimatePower {
 	private int ultimateTurnCount;
@@ -18,9 +20,12 @@ public class Player extends Entity implements UltimatePower {
 		this.rand = new Random();
 	}
 
-	@Override
-	public void attack(Entity target) {
-		int dealDamage = this.getAttackPower();
+	// Attack For Player
+	public String attack(Entity target, AttackZone sliderZone , EnemyPane enemyPane) {
+
+		int dealDamage = this.getAttackPower() + plusDamageFromZone(sliderZone);
+		String dialogueDealDamage ;
+		// define range of value
 		double failToAttack = rand.nextDouble();
 		double successToAttack = rand.nextDouble();
 
@@ -28,11 +33,14 @@ public class Player extends Entity implements UltimatePower {
 			double successCriticalHit = rand.nextDouble();
 			double failCriticalHit = rand.nextDouble();
 			if (successCriticalHit > failCriticalHit) {
-				dealDamage *= 2;
+				dealDamage *= 1;
 			}
 			target.takeDamage(dealDamage);
-			System.out.println("Deal Damage To " + target.getName() + " total " + dealDamage + " damage.");
-
+			dialogueDealDamage = "Deal Damage To " + target.getName() + " total " + dealDamage + " damage." ;
+			
+			// update UI health bar of enemy
+			enemyPane.updateHealthBar();
+			
 			double failUltimateCharge = rand.nextDouble();
 			double successUltimateCharge = rand.nextDouble();
 			if (successUltimateCharge > failUltimateCharge) {
@@ -43,8 +51,13 @@ public class Player extends Entity implements UltimatePower {
 			String[] dialogueFailAttack = { " 5555555413347", " ,you have hit enemy or else you will get U.",
 					" Pathetic" };
 			int indexDialogue = rand.nextInt(3);
-			System.out.println(target.getName() + " evades! " + dialogueFailAttack[indexDialogue]);
+			dialogueDealDamage = target.getName() + " evades! " + dialogueFailAttack[indexDialogue] ;
 		}
+		
+		System.out.println(dialogueDealDamage);
+		System.out.println("current enemy hp is " + target.getCurrentHealth() + "\n");
+		
+		return dialogueDealDamage ;
 	}
 
 	@Override
@@ -55,13 +68,12 @@ public class Player extends Entity implements UltimatePower {
 			System.out.println("Deal Damage To " + target.getName() + " total " + dealDamage + " damage.");
 		}
 	}
-	
+
 	public void evade(Enemy enemy) {
 		double evadeChance = rand.nextDouble();
-		if(evadeChance > enemy.getAttackAccuracy()) {
+		if (evadeChance > enemy.getAttackAccuracy()) {
 			System.out.println("Evade Success!!");
-		}
-		else {
+		} else {
 			System.out.println("Evade Fail.");
 			this.takeDamage(enemy.getAttackPower());
 		}
@@ -98,7 +110,17 @@ public class Player extends Entity implements UltimatePower {
 		}
 	}
 
-	//check player can use ultimate or not
+	private int plusDamageFromZone(AttackZone sliderZone) {
+		if (sliderZone == AttackZone.GREEN) {
+			return 10;
+		} else if (sliderZone == AttackZone.YELLOW) {
+			return 5;
+		}
+		// Red Zone return 0
+		return 0;
+	}
+
+	// check player can use ultimate or not
 	@Override
 	public boolean canUseUltimate() {
 		return ultimateTurnCount >= 5;

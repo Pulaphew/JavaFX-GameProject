@@ -1,5 +1,8 @@
 package gameApplication;
 
+import entity.Enemy;
+import entity.Nattee;
+import entity.Player;
 import gui.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,9 +15,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Create game components
-            PlayerPane playerPane = new PlayerPane();
-            EnemyPane enemyPane = new EnemyPane();
-            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane();
+        	
+        	Player player = new Player(100,10) ;
+        	Enemy nattee = new Nattee(100,5) ;
+        	
+            PlayerPane playerPane = new PlayerPane(player);
+            EnemyPane enemyPane = new EnemyPane(nattee);
+            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane(player , nattee ,playerPane,enemyPane);
 
             // Create GameBattlePane (which includes the background)
             GameBattlePane gameBattlePane = new GameBattlePane(playerPane, enemyPane, gameMenuBattlePane);

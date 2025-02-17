@@ -8,7 +8,9 @@ public abstract class Enemy extends Entity {
 		super(name, maxHealth, attackPower);
 		this.setAttackAccuracy(0.2);
 	}
-
+	
+	public abstract void attack(Entity target) ;
+	
 	@Override
 	public String toString() {
 		return "Enemy [isAlive()=" + isAlive() + ", getName()=" + getName() + ", getMaxHealth()=" + getMaxHealth()

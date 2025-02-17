@@ -1,6 +1,7 @@
 package gui;
 
 
+import entity.Player;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -8,8 +9,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PlayerPane extends AnchorPane{
-
-	public PlayerPane() {
+	
+	private Player player ;
+	
+	public PlayerPane(Player player) {
+		
+		this.player = player ;
+		
 		this.setPrefSize(250, 250);
 		this.setLayoutX(62);
 		this.setLayoutY(279); 
