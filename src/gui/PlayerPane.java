@@ -2,21 +2,23 @@ package gui;
 
 
 import entity.Player;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
-public class PlayerPane extends AnchorPane{
+public class PlayerPane extends EntityPane{
 	
+	private Rectangle playerHeathBarGreen ;
 	private Player player ;
 	
 	public PlayerPane(Player player) {
-		
+		super();
 		this.player = player ;
-		
-		this.setPrefSize(250, 250);
+	
 		this.setLayoutX(62);
 		this.setLayoutY(279); 
 		ImageView playerSpright = new ImageView() ;
@@ -31,7 +33,7 @@ public class PlayerPane extends AnchorPane{
 		playerHeathBarRed.setLayoutY(210);
 		
 		//green show current hp
-		Rectangle playerHeathBarGreen = new Rectangle(250,20) ;
+		playerHeathBarGreen = new Rectangle(250,20) ;
 		playerHeathBarGreen.setFill(Color.GREEN);
 		playerHeathBarGreen.setLayoutX(0);
 		playerHeathBarGreen.setLayoutY(210);
@@ -40,8 +42,28 @@ public class PlayerPane extends AnchorPane{
 		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
 		playerSpright.setImage(new Image(image_path)) ;
 		this.getChildren().addAll(playerSpright,playerHeathBarRed,playerHeathBarGreen) ;
+	}
 	
+	public void updateHealthBar() {
+		double healthPercentage = (double) player.getCurrentHealth() / player.getMaxHealth() ;
+		double targetWidth = 250 * healthPercentage ;
+		double currentWidth = playerHeathBarGreen.getWidth();
 		
+		// Timeline for smooth transition of health bar width
+        Timeline timeline = new Timeline();
+
+        // Gradual change in width, 60fps smooth animation
+        double step = (targetWidth - currentWidth) / 30; // 30 frames to reach the target width
+        for (int i = 0; i <= 30; i++) {
+            double finalStep = step * i;
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.01 * i), e -> {
+                playerHeathBarGreen.setWidth(currentWidth + finalStep);
+            });
+            timeline.getKeyFrames().add(keyFrame);
+        }
+		
+		timeline.setCycleCount(1);
+		timeline.play();
 	}
 	
 }

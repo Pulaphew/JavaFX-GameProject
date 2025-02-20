@@ -3,6 +3,8 @@ package entity;
 import java.util.Random;
 
 import enemyAbility.HealingPower;
+import gui.EnemyPane;
+import gui.PlayerPane;
 
 public class Nattee extends Enemy implements HealingPower {
 
@@ -17,9 +19,16 @@ public class Nattee extends Enemy implements HealingPower {
 	}
 
 	@Override
-	public void attack(Entity target) {
+	public String attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) {
 		target.takeDamage(this.getAttackPower());
-
+		playerPane.updateHealthBar();
+		String[] message = { 
+				"\"Maybe you should study harder, students.\"\n", 
+				"\"Who wants to drop this course?\"\n",
+				"\"Why do I feel like you're slow, like Big O squared?\"\n" 
+				};
+		String dialogue = message[rand.nextInt(2)] + this.getName() + " deal damage to you ,equal " + this.getAttackPower();
+		
 		double healingChance = rand.nextDouble();
 
 		// 35 % chance to increase healing counter
@@ -27,24 +36,38 @@ public class Nattee extends Enemy implements HealingPower {
 			HealingCounter++;
 		}
 		if (HealingCounter == 3) {
-			heal();
+			String healDialogue = heal();
+			enemyPane.updateHealthBar();
+			dialogue += healDialogue ;
 			HealingUltimateCharge++;
 			HealingCounter = 0;
 		}
+		
+		//sysout to terminal for check
+		System.out.println(this.getName() + "\nhave HealingCounter = " + this.getHealingCounter() + 
+				"\nhave HealingUltimateCharge = " + this.getHealingUltimateCharge());
+		
+		return dialogue ;
 	}
 
 	@Override
-	public void heal() {
+	public String heal() {
+		boolean isUltimate = false ;
 		// healing from maxHealth 1 in 5 (20%)
 		int healAmount = this.getMaxHealth() / 5;
 		// healing ultimate heal 50%
 		if (HealingUltimateCharge == 5) {
+			isUltimate = true ;
 			healAmount = this.getMaxHealth() / 2;
 		}
 
 		this.setCurrentHealth(this.getCurrentHealth() + healAmount);
-		String healDialogue = this.getName() + " heals " + healAmount + " HP!";
-		System.out.println(healDialogue);
+		String healDialogue = "\n" + this.getName() + " heals " + healAmount + " HP!";
+		if(isUltimate) {
+			healDialogue = "\nNattee using ULTIMATE HEALING!!! " + healDialogue ;
+		}
+		
+		return healDialogue ;
 	}
 
 	// Getter & Setter

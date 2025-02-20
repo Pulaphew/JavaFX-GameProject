@@ -3,6 +3,7 @@ package gui;
 import entity.Enemy;
 import entity.Player;
 import gamelogic.AttackZone;
+import gamelogic.GameLogic;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -14,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class GameMenuBattlePane extends Pane {
@@ -32,7 +34,15 @@ public class GameMenuBattlePane extends Pane {
 	private boolean isAttackingProgress = false;
 	private TranslateTransition slideAnimation;
 
+	private Button attackButton;
+	private Button ultimateButton;
+	private Button evadeButton;
+
 	private boolean isPressed = false;
+	private int dialogueIndex = 0;
+	private String[] dialogueArray;
+
+	private GameLogic gameLogic;
 
 	public GameMenuBattlePane(Player player, Enemy enemy, PlayerPane playerPane, EnemyPane enemyPane) {
 
@@ -61,17 +71,22 @@ public class GameMenuBattlePane extends Pane {
 		menuButton.setAlignment(Pos.CENTER);
 
 		// Create Button
-		Button attackButton = new Button("Attack");
+		attackButton = new Button("Attack");
 		attackButton.setPrefSize(250, 90);
 		attackButton.setFont(new Font(30));
 		// action
 		attackButton.setOnAction(e -> switchAttackToSlideBar());
 
-		Button ultimateButton = new Button("Ultimate");
+		ultimateButton = new Button("Ultimate\n" + this.player.getUltimateTurnCount());
 		ultimateButton.setPrefSize(250, 90);
-		ultimateButton.setFont(new Font(30));
+		ultimateButton.setFont(new Font(25));
+		ultimateButton.setWrapText(true);
+		ultimateButton.setTextAlignment(TextAlignment.CENTER);
+		ultimateButton.setDisable(true); // can use when ultimatecount >= 5
+		// action
+		ultimateButton.setOnAction(e -> playerUseUltimate());
 
-		Button evadeButton = new Button("Evade");
+		evadeButton = new Button("Evade");
 		evadeButton.setPrefSize(250, 90);
 		evadeButton.setFont(new Font(30));
 
@@ -82,17 +97,44 @@ public class GameMenuBattlePane extends Pane {
 
 	// method to switch after stop slider then show dialogue battle
 	// display situation in Damage
-	public void switchSliderBarToDialogue(String dialogue) {
+	public void switchToDialogue(String... dialogue) {
 
-		this.getChildren().removeAll(slideBarPane, sliderPane);
-		this.dialoguePane.setDialogueText(dialogue);
+		if (dialogue == null || dialogue.length == 0)
+			return;
+
+		dialogueIndex = 0;
+		dialogueArray = dialogue;
+
+		if (menuButton != null) {
+			menuButton.setVisible(false);
+		}
+		if (slideBarPane != null && sliderPane != null) {
+			this.getChildren().removeAll(slideBarPane, sliderPane);
+		}
+
 		this.dialoguePane.toFront();
 		this.dialoguePane.setVisible(true);
+		this.dialoguePane.setDialogueText(dialogueArray[dialogueIndex]);
 
 		Scene scene = this.getScene();
 		if (scene != null) {
 			scene.setOnMouseClicked(null); // clear
-			scene.setOnMouseClicked(e -> returnToGameMenu());
+			scene.setOnKeyPressed(null);
+			if (this.isAttackingProgress) {
+				scene.setOnMouseClicked(e -> advanceDialogue());
+			}
+		}
+		else {
+			System.out.println("scene is null from switchToDialogue");
+		}
+	}
+
+	private void advanceDialogue() {
+		if (dialogueArray == null || dialogueIndex >= dialogueArray.length - 1) {
+			returnToGameMenu();
+		} else {
+			dialogueIndex++;
+			this.dialoguePane.setDialogueText(dialogueArray[dialogueIndex]);
 		}
 	}
 
@@ -128,7 +170,7 @@ public class GameMenuBattlePane extends Pane {
 		// if animation finish , return to game menu
 		slideAnimation.setOnFinished(e -> {
 			PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
-			delay.setOnFinished(ev -> switchSliderBarToDialogue("You did not do Attack!!!"));
+			delay.setOnFinished(ev -> switchToDialogue("You did not do Attack!!!"));
 			delay.play();
 		});
 
@@ -138,6 +180,7 @@ public class GameMenuBattlePane extends Pane {
 				if (event.getCode() == KeyCode.A) {
 					isPressed = true;
 					stopSlider();
+					scene.setOnKeyPressed(null);
 				}
 			});
 		}
@@ -156,14 +199,25 @@ public class GameMenuBattlePane extends Pane {
 
 		// call method from Player to attack Enemy
 		String dialogueDamage = player.attack(enemy, SliderZone, enemyPane);
+		updateUltimateButton();
 
-		// delay before return to GameMenu
 		PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
-		delay.setOnFinished(e -> switchSliderBarToDialogue(dialogueDamage));
+		delay.setOnFinished(e -> {
+			switchToDialogue(dialogueDamage);
+
+			Scene scene = this.getScene();
+			if (scene != null) {
+				scene.setOnMouseClicked(ev -> {
+					scene.setOnMouseClicked(null); // clear
+					gameLogic.onPlayerAttackCompletes();
+				});
+			}
+		});
 		delay.play();
+
 	}
 
-	private void returnToGameMenu() {
+	public void returnToGameMenu() {
 		this.dialoguePane.setVisible(false);
 		isPressed = false;
 		menuButton.setVisible(true);
@@ -185,5 +239,30 @@ public class GameMenuBattlePane extends Pane {
 			res = AttackZone.GREEN;
 		}
 		return res;
+	}
+
+	private void updateUltimateButton() {
+		this.ultimateButton.setText("Ultimate\n" + this.player.getUltimateTurnCount());
+		if (this.player.canUseUltimate()) {
+			this.ultimateButton.setText("Ultimate\nREADY!!");
+			this.ultimateButton.setDisable(false);
+		}
+	}
+
+	private void playerUseUltimate() {
+		String dialogueDamage = this.player.useUltimate(enemy, enemyPane);
+		this.ultimateButton.setDisable(true);
+		this.ultimateButton.setText("Ultimate\n" + this.player.getUltimateTurnCount());
+		switchToDialogue(dialogueDamage);
+
+		Scene scene = this.getScene() ;
+		if (scene != null) {
+			scene.setOnMouseClicked(e -> gameLogic.onPlayerAttackCompletes());
+		}
+
+	}
+
+	public void setGameLogic(GameLogic gameLogic) {
+		this.gameLogic = gameLogic;
 	}
 }

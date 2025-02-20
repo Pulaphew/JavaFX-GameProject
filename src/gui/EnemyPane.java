@@ -11,15 +11,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class EnemyPane extends AnchorPane {
+public class EnemyPane extends EntityPane {
 	
 	private Rectangle enemyHeathBarGreen ;
 	private Enemy enemy ;
 	
 	public EnemyPane(Enemy enemy) {
+		//super
+		super();
 		this.enemy = enemy ;
 		
-		this.setPrefSize(250, 250);
 		this.setLayoutX(1010);
 		this.setLayoutY(80); 
 		ImageView enemySpright = new ImageView() ;

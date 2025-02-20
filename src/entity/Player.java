@@ -5,6 +5,7 @@ import java.util.Random;
 import enemyAbility.UltimatePower;
 import gamelogic.AttackZone;
 import gui.EnemyPane;
+import gui.EntityPane;
 
 public class Player extends Entity implements UltimatePower {
 	private int ultimateTurnCount;
@@ -44,7 +45,7 @@ public class Player extends Entity implements UltimatePower {
 			double failUltimateCharge = rand.nextDouble();
 			double successUltimateCharge = rand.nextDouble();
 			if (successUltimateCharge > failUltimateCharge) {
-				this.ultimateTurnCount++;
+				if(this.ultimateTurnCount < 5) this.ultimateTurnCount++;
 			}
 
 		} else {
@@ -61,12 +62,17 @@ public class Player extends Entity implements UltimatePower {
 	}
 
 	@Override
-	public void useUltimate(Entity target) {
+	public String useUltimate(Entity target , EntityPane enemyPane) {
+		String dialogue = "" ;
 		if (this.canUseUltimate()) {
 			int dealDamage = this.getAttackPower() * (rand.nextInt(3) + 1) * 5;
 			target.takeDamage(dealDamage);
-			System.out.println("Deal Damage To " + target.getName() + " total " + dealDamage + " damage.");
+			this.ultimateTurnCount = 0 ;
+			dialogue = "Ultimate!!! Deal Damage To " + target.getName() + " total " + dealDamage + " damage." ;
+			// update UI health bar of enemy
+			((EnemyPane)enemyPane).updateHealthBar();
 		}
+		return dialogue ;
 	}
 
 	public void evade(Enemy enemy) {

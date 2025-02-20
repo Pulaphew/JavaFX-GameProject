@@ -4,6 +4,7 @@ import java.util.Random;
 
 import enemyAbility.HealingPower;
 import enemyAbility.UltimatePower;
+import gui.EntityPane;
 
 public class Pto extends Enemy implements UltimatePower, HealingPower {
 
@@ -31,15 +32,18 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 	}
 
 	@Override
-	public void heal() {
+	public String heal() {
 		int healAmount = this.getMaxHealth() / 4;
 		this.setCurrentHealth(this.getCurrentHealth() + healAmount);
-		System.out.println(this.getName() + " heals " + healAmount + " HP!");
+		String dialogueHeal = "\n" + this.getName() + " heals " + healAmount + " HP!";
+		return dialogueHeal;
 	}
 
 	@Override
-	public void useUltimate(Entity player) {
+	public String useUltimate(Entity player , EntityPane playerPane ) {
+		String dialogue ;
 		if(this.canUseUltimate()) {
+			dialogue = this.getName() + " uses ULTIMATE ATTACK!!!";
 			System.out.println(this.getName() + " uses ULTIMATE ATTACK!!!");
 			player.takeDamage(this.getAttackPower() * 3);
 

@@ -1,15 +1,19 @@
 package entity;
 
+import gui.EnemyPane;
+import gui.PlayerPane;
+
 public abstract class Enemy extends Entity {
 	
 	private double attackAccuracy ;
+	
 	
 	public Enemy(String name, int maxHealth, int attackPower) {
 		super(name, maxHealth, attackPower);
 		this.setAttackAccuracy(0.2);
 	}
 	
-	public abstract void attack(Entity target) ;
+	public abstract String attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) ;
 	
 	@Override
 	public String toString() {

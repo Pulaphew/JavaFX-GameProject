@@ -3,6 +3,7 @@ package gameApplication;
 import entity.Enemy;
 import entity.Nattee;
 import entity.Player;
+import gamelogic.GameLogic;
 import gui.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,17 +16,16 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Create game components
-        	
-        	Player player = new Player(100,10) ;
-        	Enemy nattee = new Nattee(100,5) ;
-        	
+            Player player = new Player(100, 2);
+            Enemy nattee = new Nattee(100, 5);
+
             PlayerPane playerPane = new PlayerPane(player);
             EnemyPane enemyPane = new EnemyPane(nattee);
-            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane(player , nattee ,playerPane,enemyPane);
+            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane(player, nattee, playerPane, enemyPane);
 
             // Create GameBattlePane (which includes the background)
             GameBattlePane gameBattlePane = new GameBattlePane(playerPane, enemyPane, gameMenuBattlePane);
-
+            
             // Root pane
             Pane root = new Pane();
             root.getChildren().add(gameBattlePane);
@@ -35,7 +35,12 @@ public class Main extends Application {
             primaryStage.setTitle("Battle System");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-            primaryStage.show();
+            primaryStage.show();  // Scene is now fully initialized
+
+            // Initialize GameLogic AFTER primaryStage.show()
+            GameLogic gameLogic = new GameLogic(player, nattee, playerPane, enemyPane, gameBattlePane);
+            gameMenuBattlePane.setGameLogic(gameLogic);
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error loading the game.");

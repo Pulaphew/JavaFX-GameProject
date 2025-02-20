@@ -1,8 +1,9 @@
 package enemyAbility;
 
 import entity.Entity;
+import gui.EntityPane;
 
 public interface UltimatePower {
-	void useUltimate(Entity entity) ;
+	public String useUltimate(Entity entity, EntityPane entityPane) ;
 	public boolean canUseUltimate() ;
 }

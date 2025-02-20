@@ -46,4 +46,7 @@ public class GameBattlePane extends AnchorPane {
 				enemyPane);
 	}
 
+	public GameMenuBattlePane getGameMenuBattlePane() {
+		return gameMenuBattlePane;
+	}
 }
