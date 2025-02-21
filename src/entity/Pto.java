@@ -46,6 +46,10 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 		this.setImmortal(true);
 		this.setImmorTalTurnCount(2);
 		dialogue += this.getName() + " is now Immortal for 2 turns!";
+		
+		//update color after immortal
+		enemyPane.updateEnemyImmortal();
+		
 		// reset ultimate turn count
 		this.setUltimateTurnCount(0);
 		return dialogue ;
@@ -75,7 +79,7 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 		
 		 // 40% chance to increase ultimate charge
 	    double ultimateChargeChance = rand.nextInt(5); // 0 1 2 3 4
-	    if (ultimateChargeChance < 2) { // 40% probability
+	    if (ultimateChargeChance < 2 && !this.isImmortal()) { // 40% probability
 	        this.setUltimateTurnCount(this.getUltimateTurnCount() + 1);
 	        System.out.println(this.getUltimateTurnCount());
 	    }

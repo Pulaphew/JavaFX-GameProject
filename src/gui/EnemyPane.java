@@ -2,8 +2,10 @@ package gui;
 
 
 import entity.Enemy;
+import entity.Pto;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +15,7 @@ import javafx.util.Duration;
 
 public class EnemyPane extends EntityPane {
 	
+	private ImageView enemySprite;
 	private Rectangle enemyHeathBarGreen ;
 	private Enemy enemy ;
 	
@@ -23,9 +26,9 @@ public class EnemyPane extends EntityPane {
 		
 		this.setLayoutX(1010);
 		this.setLayoutY(80); 
-		ImageView enemySpright = new ImageView() ;
-		enemySpright.setFitWidth(250);
-		enemySpright.setFitHeight(250);
+		enemySprite = new ImageView() ;
+		enemySprite.setFitWidth(250);
+		enemySprite.setFitHeight(250);
 		
 		//make hearth bar for Enemy
 		//red to show hp decrease by damage
@@ -42,8 +45,8 @@ public class EnemyPane extends EntityPane {
 		
 		//edit image here
 		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
-		enemySpright.setImage(new Image(image_path)) ;
-		this.getChildren().addAll(enemySpright,enemyHeathBarRed,enemyHeathBarGreen) ;
+		enemySprite.setImage(new Image(image_path)) ;
+		this.getChildren().addAll(enemySprite,enemyHeathBarRed,enemyHeathBarGreen) ;
 	}
 	
 	// set width of health bar after take damage
@@ -67,5 +70,23 @@ public class EnemyPane extends EntityPane {
 		
 		timeline.setCycleCount(1);
 		timeline.play();
+	}
+	
+	public void updateEnemyImmortal() {
+		if(enemy instanceof Pto) {
+			Pto enemyImmortal = (Pto)enemy;
+			if(enemyImmortal.isImmortal()) {
+				ColorAdjust colorAdjust = new ColorAdjust();
+				colorAdjust.setHue(40.0 / 360);  // Hue value (40 degrees converted to a fraction)
+				colorAdjust.setSaturation(0.3); // Saturation value (30% increase in saturation)
+				colorAdjust.setBrightness(0);  // No change in brightness
+				enemySprite.setEffect(colorAdjust);
+				enemyHeathBarGreen.setFill(Color.YELLOW);
+			}
+			else {
+				enemySprite.setEffect(null);
+				enemyHeathBarGreen.setFill(Color.GREEN);
+			}
+		}
 	}
 }

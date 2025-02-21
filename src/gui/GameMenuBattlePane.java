@@ -8,6 +8,7 @@ import entity.Narong;
 import entity.Player;
 import gamelogic.AttackZone;
 import gamelogic.GameLogic;
+import gamelogic.SlideAnimationSelector;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -182,18 +183,28 @@ public class GameMenuBattlePane extends Pane {
 		slideBarPane = new SlideBarPane();
 		sliderPane = new SliderPane();
 
+		// Get setting based on enemy
+		SlideAnimationSelector.SlideAnimationSettings settings = SlideAnimationSelector.getSetting(enemy);
+		double speed = settings.speed;
+		double initialPositionX = settings.initialPositionX;
+		double setToPositionX = settings.endToPositionX;
+
 		// set layout same as GameMenu
 		slideBarPane.setLayoutX(0);
 		slideBarPane.setLayoutY(0);
 
-		sliderPane.setLayoutX(150);
+		sliderPane.setLayoutX(initialPositionX);
 		sliderPane.setLayoutY(50);
+
+		System.out.println(String.format("\nSliderPane, speed = %.2f, initialPosX = %.1f, endPosX = %.1f", speed,
+				initialPositionX, setToPositionX));
 
 		this.getChildren().addAll(slideBarPane, sliderPane);
 
-		int speed = 1;
 		slideAnimation = new TranslateTransition(Duration.seconds(speed), sliderPane);
-		slideAnimation.setToX(1039);
+		double distance = setToPositionX - initialPositionX;
+		slideAnimation.setByX(distance);
+//		slideAnimation.setToX(setToPositionX);
 		slideAnimation.setCycleCount(1);
 		slideAnimation.play();
 
@@ -222,7 +233,6 @@ public class GameMenuBattlePane extends Pane {
 				}
 			});
 		}
-
 	}
 
 	private void stopSlider() {
@@ -296,7 +306,7 @@ public class GameMenuBattlePane extends Pane {
 	private void playerUseUltimate() {
 		ArrayList<String> dialogues = new ArrayList<String>();
 
-		String dialogueDamage = this.player.useUltimate(enemy,playerPane,enemyPane);
+		String dialogueDamage = this.player.useUltimate(enemy, playerPane, enemyPane);
 		dialogues.add(dialogueDamage);
 
 		this.ultimateButton.setDisable(true);
@@ -316,29 +326,36 @@ public class GameMenuBattlePane extends Pane {
 	}
 
 	private void playerUseEvade() {
+		ArrayList<String> dialogues = new ArrayList<String>();
 		String dialogueEvade;
-
 		// evade chance = 60 % (3 in 5)
 		int evadeChance = rand.nextInt(5);
 		boolean isEvadeSuccessful = evadeChance < 3;
 
 		if (isEvadeSuccessful) {
-			dialogueEvade = "Evade Success!! You dodged " + enemy.getName() + " attack 555+\n";
+			dialogueEvade = "Evade Success!! You dodged " + enemy.getName() + " attack 555+";
+			dialogues.add(dialogueEvade);
+
+			// 30% chance to heal after evading
+			if (rand.nextInt(10) < 7) {
+				dialogues.add(player.heal());
+				playerPane.updateHealthBar();
+			}
 
 			// skip enemy attack and return to game menu
-			switchToDialogue(dialogueEvade);
+			switchToDialogue(dialogues.toArray(new String[0]));
+			// if player is poison , then switch dialogue to show poison damge first
 			Scene scene = this.getScene();
 			if (scene != null) {
 				if (player.isPoisoned()) {
 					scene.setOnMouseClicked(e -> switchToDialogue(
 							player.updateStatusEffects(((Narong) enemy).getPoisonDamage(), playerPane)));
-				} else {
-					scene.setOnMouseClicked(e -> returnToGameMenu());
 				}
 			}
 		} else {
 			dialogueEvade = "Evade Failed... Noooo Please don't hurt me~";
-			switchToDialogue(dialogueEvade);
+			dialogues.add(dialogueEvade);
+			switchToDialogue(dialogues.toArray(new String[0]));
 			Scene scene = this.getScene();
 			if (scene != null) {
 				scene.setOnMouseClicked(e -> {

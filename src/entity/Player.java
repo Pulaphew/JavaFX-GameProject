@@ -2,13 +2,14 @@ package entity;
 
 import java.util.Random;
 
+import ability.HealingPower;
 import ability.UltimatePower;
 import gamelogic.AttackZone;
 import gui.EnemyPane;
 import gui.EntityPane;
 import gui.PlayerPane;
 
-public class Player extends Entity implements UltimatePower {
+public class Player extends Entity implements UltimatePower , HealingPower {
 	private int ultimateTurnCount;
 	private int poisonTurnCount; // Tracks how long the player has been poisoned
 	private boolean isPoisoned; // Indicates if the player is currently poisoned
@@ -21,6 +22,20 @@ public class Player extends Entity implements UltimatePower {
 		this.isPoisoned = false;
 		this.rand = new Random();
 	}
+	
+	@Override
+	public String heal() {
+		//Heal to player 15% of maxHp
+		int healAmount = (int)(this.getMaxHealth() * 0.15);
+		this.setCurrentHealth(this.getCurrentHealth() + healAmount);
+		String[] dialogueHeal = {
+				"You realize that life is not just about exams.",
+				"Suddenly, the love from your father and mother comes to you.",
+				"YOU SHOULDN'T LOST HERE,ARGHHHH!!!!"
+		};
+		String dialogue = dialogueHeal[rand.nextInt(2)] + "\nYou got heal " + healAmount + " HP!!\n";
+		return dialogue ;
+	}
 
 	// Attack For Player
 	public String attack(Entity target, AttackZone sliderZone , EnemyPane enemyPane) {
@@ -28,10 +43,10 @@ public class Player extends Entity implements UltimatePower {
 		int dealDamage = this.getAttackPower() + plusDamageFromZone(sliderZone);
 		String dialogueDealDamage ;
 		// define range of value
-		double failToAttack = rand.nextDouble();
-		double successToAttack = rand.nextDouble();
-
-		if (successToAttack > failToAttack) {
+		int chanceAttackHit = rand.nextInt(5);
+		
+		//have a chance 4/5 (80%) to attackHit
+		if (chanceAttackHit < 4) {
 			double successCriticalHit = rand.nextDouble();
 			double failCriticalHit = rand.nextDouble();
 			if (successCriticalHit > failCriticalHit) {
@@ -85,16 +100,6 @@ public class Player extends Entity implements UltimatePower {
 			enemyPane.updateHealthBar();
 		}
 		return dialogue ;
-	}
-
-	public void evade(Enemy enemy) {
-		double evadeChance = rand.nextDouble();
-		if (evadeChance > enemy.getAttackAccuracy()) {
-			System.out.println("Evade Success!!");
-		} else {
-			System.out.println("Evade Fail.");
-			this.takeDamage(enemy.getAttackPower());
-		}
 	}
 
 	public void applyPoison() {
