@@ -3,7 +3,6 @@ package gui;
 import java.util.ArrayList;
 import java.util.Random;
 
-import ability.PoisonousPower;
 import entity.Enemy;
 import entity.Narong;
 import entity.Player;
@@ -46,7 +45,6 @@ public class GameMenuBattlePane extends Pane {
 	private Button evadeButton;
 
 	private boolean isInDialogue = false;
-	private boolean isPressed = false;
 	private int dialogueIndex = 0;
 	private String[] dialogueArray;
 
@@ -205,7 +203,7 @@ public class GameMenuBattlePane extends Pane {
 			delay.setOnFinished(ev -> {
 				switchToDialogue("You did not do Attack!!!");
 				Scene scene = this.getScene();
-				if(scene != null) {
+				if (scene != null) {
 					scene.setOnMouseClicked(ev2 -> {
 						scene.setOnMouseClicked(null);
 						gameLogic.onPlayerAttackCompletes();
@@ -219,7 +217,6 @@ public class GameMenuBattlePane extends Pane {
 		if (scene != null) {
 			scene.setOnKeyPressed(event -> {
 				if (event.getCode() == KeyCode.A) {
-					isPressed = true;
 					stopSlider();
 					scene.setOnKeyPressed(null);
 				}
@@ -267,7 +264,6 @@ public class GameMenuBattlePane extends Pane {
 
 	public void returnToGameMenu() {
 		this.dialoguePane.setVisible(false);
-		isPressed = false;
 		menuButton.setVisible(true);
 		isAttackingProgress = false;
 
@@ -299,17 +295,17 @@ public class GameMenuBattlePane extends Pane {
 
 	private void playerUseUltimate() {
 		ArrayList<String> dialogues = new ArrayList<String>();
-		
-		String dialogueDamage = this.player.useUltimate(enemy, enemyPane);
+
+		String dialogueDamage = this.player.useUltimate(enemy,playerPane,enemyPane);
 		dialogues.add(dialogueDamage);
-		
+
 		this.ultimateButton.setDisable(true);
 		this.ultimateButton.setText("Ultimate\n" + this.player.getUltimateTurnCount());
 
 		animationPlayerAction();
 
 		String[] allDialogue = dialogues.toArray(new String[0]);
-		
+
 		switchToDialogue(allDialogue);
 
 		Scene scene = this.getScene();
@@ -333,9 +329,10 @@ public class GameMenuBattlePane extends Pane {
 			switchToDialogue(dialogueEvade);
 			Scene scene = this.getScene();
 			if (scene != null) {
-				if(player.isPoisoned()) {
-					scene.setOnMouseClicked(e -> switchToDialogue(player.updateStatusEffects(((Narong)enemy).getPoisonDamage(), playerPane)));
-				}else {
+				if (player.isPoisoned()) {
+					scene.setOnMouseClicked(e -> switchToDialogue(
+							player.updateStatusEffects(((Narong) enemy).getPoisonDamage(), playerPane)));
+				} else {
 					scene.setOnMouseClicked(e -> returnToGameMenu());
 				}
 			}
@@ -363,7 +360,6 @@ public class GameMenuBattlePane extends Pane {
 
 		moveForward.play();
 	}
-	
 
 	public void setGameLogic(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;

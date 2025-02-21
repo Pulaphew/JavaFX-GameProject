@@ -37,6 +37,17 @@ public class Player extends Entity implements UltimatePower {
 			if (successCriticalHit > failCriticalHit) {
 				dealDamage *= 1;
 			}
+			
+			// case if enemy is Immortal
+			// Since takeDamage(int damage) is void , cannot return String , then I put it in this instead
+			if(target instanceof Pto) {
+				Pto enemyImmortal = (Pto)target;
+				if(enemyImmortal.isImmortal()) {
+					String dialogueCanNotDealDamage = enemyImmortal.getName() + " is immortal right now! no damage taken.";
+					return dialogueCanNotDealDamage;
+				}
+			}
+			
 			target.takeDamage(dealDamage);
 			dialogueDealDamage = "Deal Damage To " + target.getName() + " total " + dealDamage + " damage." ;
 			
@@ -63,7 +74,7 @@ public class Player extends Entity implements UltimatePower {
 	}
 
 	@Override
-	public String useUltimate(Entity target , EntityPane enemyPane) {
+	public String useUltimate(Entity target , PlayerPane playerPane ,EnemyPane enemyPane) {
 		String dialogue = "" ;
 		if (this.canUseUltimate()) {
 			int dealDamage = this.getAttackPower() * (rand.nextInt(3) + 1) * 5;
@@ -71,7 +82,7 @@ public class Player extends Entity implements UltimatePower {
 			this.ultimateTurnCount = 0 ;
 			dialogue = "Ultimate!!! Deal Damage To " + target.getName() + " total " + dealDamage + " damage." ;
 			// update UI health bar of enemy
-			((EnemyPane)enemyPane).updateHealthBar();
+			enemyPane.updateHealthBar();
 		}
 		return dialogue ;
 	}
@@ -116,6 +127,7 @@ public class Player extends Entity implements UltimatePower {
 			if (poisonTurnCount <= 0) {
 				isPoisoned = false;
 				dialogue += "you is no longer poisoned!";
+				playerPane.getPlayerSprite().setEffect(null);
 			}
 			return dialogue ;
 		}

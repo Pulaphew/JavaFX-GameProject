@@ -56,10 +56,16 @@ public abstract class Entity {
 	}
 
 	public void setCurrentHealth(int currentHealth) {
-		if (currentHealth < 0)
+		if (currentHealth < 0) {
 			this.currentHealth = 0;
-		else
+		}
+		else if(currentHealth > this.getMaxHealth()) {
+			this.currentHealth = this.getMaxHealth();
+		}
+		else {
 			this.currentHealth = currentHealth;
+		}
+			
 	}
 
 	public int getAttackPower() {

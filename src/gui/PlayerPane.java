@@ -12,6 +12,7 @@ import javafx.util.Duration;
 
 public class PlayerPane extends EntityPane{
 	
+	private ImageView playerSprite ;
 	private Rectangle playerHeathBarGreen ;
 	private Player player ;
 	
@@ -21,9 +22,9 @@ public class PlayerPane extends EntityPane{
 	
 		this.setLayoutX(62);
 		this.setLayoutY(279); 
-		ImageView playerSpright = new ImageView() ;
-		playerSpright.setFitWidth(250);
-		playerSpright.setFitHeight(250);
+		playerSprite = new ImageView() ;
+		playerSprite.setFitWidth(250);
+		playerSprite.setFitHeight(250);
 		
 		//make hearth bar for Player
 		//red to show hp decrease by damage
@@ -40,8 +41,8 @@ public class PlayerPane extends EntityPane{
 		
 		//edit image here
 		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
-		playerSpright.setImage(new Image(image_path)) ;
-		this.getChildren().addAll(playerSpright,playerHeathBarRed,playerHeathBarGreen) ;
+		playerSprite.setImage(new Image(image_path)) ;
+		this.getChildren().addAll(playerSprite,playerHeathBarRed,playerHeathBarGreen) ;
 	}
 	
 	public void updateHealthBar() {
@@ -64,6 +65,10 @@ public class PlayerPane extends EntityPane{
 		
 		timeline.setCycleCount(1);
 		timeline.play();
+	}
+	
+	public ImageView getPlayerSprite() {
+		return playerSprite ;
 	}
 	
 }

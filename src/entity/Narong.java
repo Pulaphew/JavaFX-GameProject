@@ -6,6 +6,9 @@ import java.util.Random;
 import ability.PoisonousPower;
 import gui.EnemyPane;
 import gui.PlayerPane;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Narong extends Enemy implements PoisonousPower {
 
@@ -41,7 +44,7 @@ public class Narong extends Enemy implements PoisonousPower {
 	    
 	    // Apply poison if not already poisoned
 	    if (target instanceof Player && rand.nextDouble() > 0.5 && !((Player) target).isPoisoned()) {
-	        applyPoison((Player) target);
+	        applyPoison((Player) target,playerPane);
 	        String poisonDialogue = this.getName() + " applied poison to you.";
 	        System.out.println(poisonDialogue);
 	        dialogues.add(poisonDialogue);
@@ -60,8 +63,16 @@ public class Narong extends Enemy implements PoisonousPower {
 
 
 	@Override
-	public void applyPoison(Player player) {
+	public void applyPoison(Player player , PlayerPane playerPane) {
 		System.out.println(player.getName() + " is poisoned!");
+		// purple with transparency
+		ColorAdjust poisonEffect = new ColorAdjust();
+		poisonEffect.setHue(-0.3);
+		poisonEffect.setSaturation(0.7);
+		poisonEffect.setBrightness(-0.2);
+		
+		playerPane.getPlayerSprite().setEffect(poisonEffect);
+		
 		// make player poisoned
 		player.applyPoison();
 	}

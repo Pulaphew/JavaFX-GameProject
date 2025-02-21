@@ -1,9 +1,11 @@
 
 package gamelogic;
 
+import ability.UltimatePower;
 import entity.Enemy;
 import entity.Narong;
 import entity.Player;
+import entity.Pto;
 import gui.EnemyPane;
 import gui.GameBattlePane;
 import gui.PlayerPane;
@@ -87,8 +89,20 @@ public class GameLogic {
 		//play both transition
 		SequentialTransition attackAnimation = new SequentialTransition(moveForward,moveBackward);
 		attackAnimation.setOnFinished(e -> {
-			String[] enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
-			gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
+			if(enemy instanceof UltimatePower || enemy instanceof Pto) {
+				Pto enemyUltimate = (Pto)enemy ;
+				if(enemyUltimate.canUseUltimate()) {
+					String enemyUltimateDialogue = enemyUltimate.useUltimate(player, playerPane , enemyPane);
+					gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyUltimateDialogue);
+				}
+				else {
+					String[] enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
+					gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
+				}
+			}else {
+				String[] enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
+				gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
+			}
 			if(scene != null) {
 				scene.setOnMouseClicked(ev -> gameBattlePane.getGameMenuBattlePane().advanceDialogue());
 			}

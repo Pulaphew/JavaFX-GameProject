@@ -1,11 +1,11 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import ability.HealingPower;
 import ability.UltimatePower;
 import gui.EnemyPane;
-import gui.EntityPane;
 import gui.PlayerPane;
 
 public class Pto extends Enemy implements UltimatePower, HealingPower {
@@ -24,16 +24,6 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 	}
 	
 	@Override
-	public void takeDamage(int damage) {
-		if(this.isImmortal()) {
-			System.out.println(this.getName() + " is immortal right now! no damage taken.");
-		}
-		else {
-			this.setCurrentHealth(this.getCurrentHealth() - damage);
-		}
-	}
-
-	@Override
 	public String heal() {
 		int healAmount = this.getMaxHealth() / 4;
 		this.setCurrentHealth(this.getCurrentHealth() + healAmount);
@@ -42,25 +32,30 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 	}
 
 	@Override
-	public String useUltimate(Entity player , EntityPane playerPane) {
-		String dialogue = null ;
-		if(this.canUseUltimate()) {
-			dialogue = this.getName() + " uses ULTIMATE ATTACK!!!\n";
-			player.takeDamage(this.getAttackPower() * 3);
-			dialogue += this.getName() + " deal damage equal" + this.getAttackPower() * 3 + " damage\n"; 
+	public String useUltimate(Entity player , PlayerPane playerPane , EnemyPane enemyPane) {
+		String dialogue ;
+		dialogue = this.getName() + " uses ULTIMATE ATTACK!!!\n";
+		player.takeDamage(this.getAttackPower() * 3);
+		playerPane.updateHealthBar();
+		
+		dialogue += this.getName() + " deal damage equal " + this.getAttackPower() * 3 + " damage"; 
 
-			// Heal and become immortal for 2 turns
-			dialogue += heal();
-			this.setImmortal(true);
-			this.setImmorTalTurnCount(2);
-			dialogue += this.getName() + " is now Immortal for 2 turns!";
-		}
+		// Heal and become immortal for 2 turns
+		dialogue += heal();
+		enemyPane.updateHealthBar();
+		this.setImmortal(true);
+		this.setImmorTalTurnCount(2);
+		dialogue += this.getName() + " is now Immortal for 2 turns!";
+		// reset ultimate turn count
+		this.setUltimateTurnCount(0);
 		return dialogue ;
 	}
 
 	@Override
 	public String[] attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) {
-		String[] allDialogue = new String[1];
+		
+		ArrayList<String> dialogues = new ArrayList<String>();
+		
 		String dialogue = "" ;
 		int damage = this.getAttackPower();
 		boolean isCritical = false ;
@@ -73,29 +68,37 @@ public class Pto extends Enemy implements UltimatePower, HealingPower {
 			dialogue += this.getName() + " lands a CRITICAL HIT!\n";
 		}
 		target.takeDamage(damage);
+		playerPane.updateHealthBar();
 		dialogue += this.getName() + " deals " + damage + " damage to " + target.getName();
 		
+		dialogues.add(dialogue);
+		
 		 // 40% chance to increase ultimate charge
-	    double ultimateChargeChance = rand.nextDouble();
-	    if (ultimateChargeChance < 0.4) { // 40% probability
+	    double ultimateChargeChance = rand.nextInt(5); // 0 1 2 3 4
+	    if (ultimateChargeChance < 2) { // 40% probability
 	        this.setUltimateTurnCount(this.getUltimateTurnCount() + 1);
+	        System.out.println(this.getUltimateTurnCount());
 	    }
 
 	    // If enemy is immortal, reduce immortal turn count
 	    if (this.isImmortal()) {
 	        this.setImmorTalTurnCount(this.getImmorTalTurnCount() - 1);
+	        System.out.println(this.getName() + " have immortal " + this.getImmorTalTurnCount() + " turn");
 	        if (this.getImmorTalTurnCount() <= 0) {
 	            this.setImmortal(false);
-	            dialogue += this.getName() + "\n is no longer immortal!";
+	            String noImmortal =  this.getName() + "\n is no longer immortal!";
+	            dialogues.add(noImmortal);
 	        }
 	    }
-	    allDialogue[0] = dialogue ;
+	   
+	    String[] allDialogue = dialogues.toArray(new String[0]);
+	    
 	    return allDialogue ;
 	}
 	
 	@Override
 	public boolean canUseUltimate() {
-		return ultimateTurnCount >= 10 ;
+		return ultimateTurnCount >= 2 ;
 	}
 
 	// Getter & Setter
