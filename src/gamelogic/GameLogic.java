@@ -2,6 +2,7 @@
 package gamelogic;
 
 import entity.Enemy;
+import entity.Narong;
 import entity.Player;
 import gui.EnemyPane;
 import gui.GameBattlePane;
@@ -32,28 +33,50 @@ public class GameLogic {
 	
 	// when player completes an attack
 	public void onPlayerAttackCompletes() {
-		if(enemy.getCurrentHealth() <= 0) {
-			endGame(true); //Player win!!
-			return;
-		}
-		
-		isPlayerTurn = false ;
-		gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
-		
-		Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
-		if (scene != null) {
-			scene.setOnMouseClicked(e -> enemyAttack());
-		}
-		else {
-			System.out.println("scene is null from onPlayerAttackCompletes");
-		}
+	    if (enemy.getCurrentHealth() <= 0) {
+	        endGame(true); // Player wins!
+	        return;
+	    }
+
+	    isPlayerTurn = false;
+
+	    Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
+
+	    if (player.isPoisoned()) {
+	        Narong enemyPoison = (Narong) enemy;
+	        gameBattlePane.getGameMenuBattlePane().switchToDialogue(
+	            player.updateStatusEffects(enemyPoison.getPoisonDamage(), playerPane)
+	        );
+
+	        if (scene != null) {
+	            scene.setOnMouseClicked(ev -> {
+	                scene.setOnMouseClicked(null); // Clear previous event
+	                gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
+
+	                scene.setOnMouseClicked(e -> {
+	                    scene.setOnMouseClicked(null); // Clear event again
+	                    enemyAttack();
+	                });
+	            });
+	        }
+	    } else {
+	        gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
+
+	        if (scene != null) {
+	            scene.setOnMouseClicked(e -> enemyAttack());
+	        }
+	    }
 	}
+
 	
 	private void enemyAttack() {
 		Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
+		
 		if(scene != null) {
 			scene.setOnMouseClicked(null);
+			scene.setOnKeyPressed(null);
 		}
+		
 		// enemy attack animation
 		TranslateTransition moveForward = new TranslateTransition(Duration.millis(200),enemyPane);
 		moveForward.setByX(-30); //move to left (negative value)
@@ -64,10 +87,10 @@ public class GameLogic {
 		//play both transition
 		SequentialTransition attackAnimation = new SequentialTransition(moveForward,moveBackward);
 		attackAnimation.setOnFinished(e -> {
-			String enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
+			String[] enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
 			gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
 			if(scene != null) {
-				scene.setOnMouseClicked(ev -> onEnemyAttackCompletes());
+				scene.setOnMouseClicked(ev -> gameBattlePane.getGameMenuBattlePane().advanceDialogue());
 			}
 		});
 		attackAnimation.play();
@@ -92,4 +115,8 @@ public class GameLogic {
 		}
 	}
 
+	public GameBattlePane getGameBattlePane() {
+		return gameBattlePane;
+	}
+	
 }

@@ -1,7 +1,7 @@
 package gameApplication;
 
 import entity.Enemy;
-import entity.Nattee;
+import entity.Narong;
 import entity.Player;
 import gamelogic.GameLogic;
 import gui.*;
@@ -17,11 +17,11 @@ public class Main extends Application {
         try {
             // Create game components
             Player player = new Player(100, 2);
-            Enemy nattee = new Nattee(100, 5);
+            Enemy enemy = new Narong(100, 5);
 
             PlayerPane playerPane = new PlayerPane(player);
-            EnemyPane enemyPane = new EnemyPane(nattee);
-            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane(player, nattee, playerPane, enemyPane);
+            EnemyPane enemyPane = new EnemyPane(enemy);
+            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane(player, enemy, playerPane, enemyPane);
 
             // Create GameBattlePane (which includes the background)
             GameBattlePane gameBattlePane = new GameBattlePane(playerPane, enemyPane, gameMenuBattlePane);
@@ -38,7 +38,7 @@ public class Main extends Application {
             primaryStage.show();  // Scene is now fully initialized
 
             // Initialize GameLogic AFTER primaryStage.show()
-            GameLogic gameLogic = new GameLogic(player, nattee, playerPane, enemyPane, gameBattlePane);
+            GameLogic gameLogic = new GameLogic(player, enemy, playerPane, enemyPane, gameBattlePane);
             gameMenuBattlePane.setGameLogic(gameLogic);
 
         } catch (Exception e) {

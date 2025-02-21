@@ -1,6 +1,11 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import ability.PoisonousPower;
 import entity.Enemy;
+import entity.Narong;
 import entity.Player;
 import gamelogic.AttackZone;
 import gamelogic.GameLogic;
@@ -20,6 +25,8 @@ import javafx.util.Duration;
 
 public class GameMenuBattlePane extends Pane {
 
+	private Random rand = new Random();
+
 	private Player player;
 	private Enemy enemy;
 
@@ -38,6 +45,7 @@ public class GameMenuBattlePane extends Pane {
 	private Button ultimateButton;
 	private Button evadeButton;
 
+	private boolean isInDialogue = false;
 	private boolean isPressed = false;
 	private int dialogueIndex = 0;
 	private String[] dialogueArray;
@@ -89,6 +97,8 @@ public class GameMenuBattlePane extends Pane {
 		evadeButton = new Button("Evade");
 		evadeButton.setPrefSize(250, 90);
 		evadeButton.setFont(new Font(30));
+		// action
+		evadeButton.setOnAction(e -> playerUseEvade());
 
 		menuButton.getChildren().addAll(attackButton, ultimateButton, evadeButton);
 
@@ -102,8 +112,14 @@ public class GameMenuBattlePane extends Pane {
 		if (dialogue == null || dialogue.length == 0)
 			return;
 
+		isInDialogue = true;
 		dialogueIndex = 0;
 		dialogueArray = dialogue;
+
+		System.out.println("\nHERE IS CHECK ITEM IN ARRAY FROM SWITCHTODIALOGUE");
+		for (int i = 0; i < dialogueArray.length; i++) {
+			System.out.println(dialogueArray[i]);
+		}
 
 		if (menuButton != null) {
 			menuButton.setVisible(false);
@@ -120,21 +136,37 @@ public class GameMenuBattlePane extends Pane {
 		if (scene != null) {
 			scene.setOnMouseClicked(null); // clear
 			scene.setOnKeyPressed(null);
-			if (this.isAttackingProgress) {
-				scene.setOnMouseClicked(e -> advanceDialogue());
-			}
-		}
-		else {
+			scene.setOnMouseClicked(e -> advanceDialogue());
+		} else {
 			System.out.println("scene is null from switchToDialogue");
 		}
 	}
 
-	private void advanceDialogue() {
-		if (dialogueArray == null || dialogueIndex >= dialogueArray.length - 1) {
+	public void advanceDialogue() {
+		if (!isInDialogue) {
+			return;
+		}
+
+		if (dialogueArray == null || dialogueIndex >= dialogueArray.length) {
 			returnToGameMenu();
-		} else {
+			return;
+		}
+
+		// Only increment if we're not at the last element
+		if (dialogueIndex < dialogueArray.length - 1) {
 			dialogueIndex++;
 			this.dialoguePane.setDialogueText(dialogueArray[dialogueIndex]);
+			System.out.println("Displaying Dialogue: " + dialogueArray[dialogueIndex]);
+		} else {
+			// End of dialogue, maybe perform some action like transitioning back to the
+			// game or finishing the battle
+			returnToGameMenu();
+		}
+
+		// Set the mouse click event again to advance the dialogue
+		Scene scene = this.getScene();
+		if (scene != null) {
+			scene.setOnMouseClicked(e -> advanceDialogue());
 		}
 	}
 
@@ -170,7 +202,16 @@ public class GameMenuBattlePane extends Pane {
 		// if animation finish , return to game menu
 		slideAnimation.setOnFinished(e -> {
 			PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
-			delay.setOnFinished(ev -> switchToDialogue("You did not do Attack!!!"));
+			delay.setOnFinished(ev -> {
+				switchToDialogue("You did not do Attack!!!");
+				Scene scene = this.getScene();
+				if(scene != null) {
+					scene.setOnMouseClicked(ev2 -> {
+						scene.setOnMouseClicked(null);
+						gameLogic.onPlayerAttackCompletes();
+					});
+				}
+			});
 			delay.play();
 		});
 
@@ -190,6 +231,8 @@ public class GameMenuBattlePane extends Pane {
 	private void stopSlider() {
 		slideAnimation.stop();
 
+		ArrayList<String> dialogues = new ArrayList<String>();
+
 		// check position x of Slider that player was press key A
 		int SliderPos = (int) sliderPane.getTranslateX();
 		System.out.println("Attack at X: " + SliderPos);
@@ -199,11 +242,17 @@ public class GameMenuBattlePane extends Pane {
 
 		// call method from Player to attack Enemy
 		String dialogueDamage = player.attack(enemy, SliderZone, enemyPane);
+		dialogues.add(dialogueDamage);
 		updateUltimateButton();
+
+		String[] allDialogue = dialogues.toArray(new String[0]);
+
+		// play animation player action
+		animationPlayerAction();
 
 		PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 		delay.setOnFinished(e -> {
-			switchToDialogue(dialogueDamage);
+			switchToDialogue(allDialogue);
 
 			Scene scene = this.getScene();
 			if (scene != null) {
@@ -214,7 +263,6 @@ public class GameMenuBattlePane extends Pane {
 			}
 		});
 		delay.play();
-
 	}
 
 	public void returnToGameMenu() {
@@ -250,17 +298,72 @@ public class GameMenuBattlePane extends Pane {
 	}
 
 	private void playerUseUltimate() {
+		ArrayList<String> dialogues = new ArrayList<String>();
+		
 		String dialogueDamage = this.player.useUltimate(enemy, enemyPane);
+		dialogues.add(dialogueDamage);
+		
 		this.ultimateButton.setDisable(true);
 		this.ultimateButton.setText("Ultimate\n" + this.player.getUltimateTurnCount());
-		switchToDialogue(dialogueDamage);
 
-		Scene scene = this.getScene() ;
+		animationPlayerAction();
+
+		String[] allDialogue = dialogues.toArray(new String[0]);
+		
+		switchToDialogue(allDialogue);
+
+		Scene scene = this.getScene();
 		if (scene != null) {
 			scene.setOnMouseClicked(e -> gameLogic.onPlayerAttackCompletes());
 		}
 
 	}
+
+	private void playerUseEvade() {
+		String dialogueEvade;
+
+		// evade chance = 60 % (3 in 5)
+		int evadeChance = rand.nextInt(5);
+		boolean isEvadeSuccessful = evadeChance < 3;
+
+		if (isEvadeSuccessful) {
+			dialogueEvade = "Evade Success!! You dodged " + enemy.getName() + " attack 555+\n";
+
+			// skip enemy attack and return to game menu
+			switchToDialogue(dialogueEvade);
+			Scene scene = this.getScene();
+			if (scene != null) {
+				if(player.isPoisoned()) {
+					scene.setOnMouseClicked(e -> switchToDialogue(player.updateStatusEffects(((Narong)enemy).getPoisonDamage(), playerPane)));
+				}else {
+					scene.setOnMouseClicked(e -> returnToGameMenu());
+				}
+			}
+		} else {
+			dialogueEvade = "Evade Failed... Noooo Please don't hurt me~";
+			switchToDialogue(dialogueEvade);
+			Scene scene = this.getScene();
+			if (scene != null) {
+				scene.setOnMouseClicked(e -> {
+					scene.setOnMouseClicked(null); // clear
+					gameLogic.onPlayerAttackCompletes();
+				});
+			}
+		}
+	}
+
+	private void animationPlayerAction() {
+		TranslateTransition moveForward = new TranslateTransition(Duration.seconds(0.3), playerPane);
+		moveForward.setByX(50); // move to right
+		moveForward.setAutoReverse(true);
+		moveForward.setCycleCount(2);// move forward then back
+
+		// reset position after play animation
+		moveForward.setOnFinished(e -> playerPane.setTranslateX(0));
+
+		moveForward.play();
+	}
+	
 
 	public void setGameLogic(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;

@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Random;
 
-import enemyAbility.HealingPower;
+import ability.HealingPower;
 import gui.EnemyPane;
 import gui.PlayerPane;
 
@@ -19,7 +19,9 @@ public class Nattee extends Enemy implements HealingPower {
 	}
 
 	@Override
-	public String attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) {
+	public String[] attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) {
+		
+		String[] allDialogue = new String[1];
 		target.takeDamage(this.getAttackPower());
 		playerPane.updateHealthBar();
 		String[] message = { 
@@ -46,8 +48,8 @@ public class Nattee extends Enemy implements HealingPower {
 		//sysout to terminal for check
 		System.out.println(this.getName() + "\nhave HealingCounter = " + this.getHealingCounter() + 
 				"\nhave HealingUltimateCharge = " + this.getHealingUltimateCharge());
-		
-		return dialogue ;
+		allDialogue[0] = dialogue ;
+		return allDialogue ;
 	}
 
 	@Override

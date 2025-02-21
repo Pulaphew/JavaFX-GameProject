@@ -1,4 +1,4 @@
-package enemyAbility;
+package ability;
 
 import entity.Player;
 

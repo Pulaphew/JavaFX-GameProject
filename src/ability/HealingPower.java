@@ -1,4 +1,4 @@
-package enemyAbility;
+package ability;
 
 public interface HealingPower {
 	

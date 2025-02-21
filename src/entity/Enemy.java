@@ -13,7 +13,7 @@ public abstract class Enemy extends Entity {
 		this.setAttackAccuracy(0.2);
 	}
 	
-	public abstract String attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) ;
+	public abstract String[] attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) ;
 	
 	@Override
 	public String toString() {

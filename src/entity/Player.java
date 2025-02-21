@@ -2,10 +2,11 @@ package entity;
 
 import java.util.Random;
 
-import enemyAbility.UltimatePower;
+import ability.UltimatePower;
 import gamelogic.AttackZone;
 import gui.EnemyPane;
 import gui.EntityPane;
+import gui.PlayerPane;
 
 public class Player extends Entity implements UltimatePower {
 	private int ultimateTurnCount;
@@ -86,34 +87,39 @@ public class Player extends Entity implements UltimatePower {
 	}
 
 	public void applyPoison() {
-		if (!isPoisoned) {
+		if (!isPoisoned && poisonTurnCount == 0) {
 			isPoisoned = true;
 			poisonTurnCount = 5;
-			System.out.println(this.getName() + " is poisoned!");
 		}
 	}
 
 	// parameter poisonDamage for Enemy that have poisonDamage deal to Player
-	public void updateStatusEffects(int poisonDamage) {
+	public String updateStatusEffects(int poisonDamage , PlayerPane playerPane) {
 		boolean poisonCritical = false;
 		if (isPoisoned) {
+			String dialogue = "" ;
 			if (rand.nextDouble() > 0.5) {
 				poisonCritical = true;
 				poisonDamage *= 2;
 			}
 			this.takeDamage(poisonDamage); // Poison damage each turn
+			playerPane.updateHealthBar();
 			poisonTurnCount--;
 
-			if (poisonCritical)
-				System.out.println("Poison Critical Hit!");
-			System.out.println(
-					this.getName() + " takes " + poisonDamage + " poison damage! " + poisonTurnCount + " turns left.");
-
+			if (poisonCritical) {
+				dialogue += "Poison Critical Hit!\n" ;
+			}
+			
+			dialogue += this.getName() + " takes " + poisonDamage + " poison damage! " + poisonTurnCount + " turns left.\n";
+			System.out.println(dialogue);
+			
 			if (poisonTurnCount <= 0) {
 				isPoisoned = false;
-				System.out.println(this.getName() + " is no longer poisoned!");
+				dialogue += "you is no longer poisoned!";
 			}
+			return dialogue ;
 		}
+		return null ;
 	}
 
 	private int plusDamageFromZone(AttackZone sliderZone) {
