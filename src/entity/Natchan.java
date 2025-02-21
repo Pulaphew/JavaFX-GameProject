@@ -6,14 +6,14 @@ import ability.HealingPower;
 import gui.EnemyPane;
 import gui.PlayerPane;
 
-public class Nattee extends Enemy implements HealingPower {
+public class Natchan extends Enemy implements HealingPower {
 
 	private int HealingCounter;
 	private int HealingUltimateCharge;
 	Random rand = new Random();
 
-	public Nattee(int maxHealth, int attackPower) {
-		super(" Nattee The DataAlgo ", maxHealth, attackPower);
+	public Natchan(int maxHealth, int attackPower) {
+		super(" Natchan The DataAlgo ", maxHealth, attackPower);
 		this.setHealingCounter(0);
 		this.setAttackAccuracy(0.2);
 	}

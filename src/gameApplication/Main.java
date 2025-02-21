@@ -1,10 +1,10 @@
 package gameApplication;
 
 import entity.Enemy;
-import entity.Narong;
-import entity.Nattee;
+import entity.Narang;
+import entity.Natchan;
 import entity.Player;
-import entity.Pto;
+import entity.Pta;
 import gamelogic.GameLogic;
 import gui.*;
 import javafx.application.Application;
@@ -19,7 +19,7 @@ public class Main extends Application {
         try {
             // Create game components
             Player player = new Player(100, 2);
-            Enemy enemy = new Pto(100, 2);
+            Enemy enemy = new Pta(100, 2);
 
             PlayerPane playerPane = new PlayerPane(player);
             EnemyPane enemyPane = new EnemyPane(enemy);

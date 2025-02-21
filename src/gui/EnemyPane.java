@@ -2,13 +2,12 @@ package gui;
 
 
 import entity.Enemy;
-import entity.Pto;
+import entity.Pta;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -73,8 +72,8 @@ public class EnemyPane extends EntityPane {
 	}
 	
 	public void updateEnemyImmortal() {
-		if(enemy instanceof Pto) {
-			Pto enemyImmortal = (Pto)enemy;
+		if(enemy instanceof Pta) {
+			Pta enemyImmortal = (Pta)enemy;
 			if(enemyImmortal.isImmortal()) {
 				ColorAdjust colorAdjust = new ColorAdjust();
 				colorAdjust.setHue(40.0 / 360);  // Hue value (40 degrees converted to a fraction)

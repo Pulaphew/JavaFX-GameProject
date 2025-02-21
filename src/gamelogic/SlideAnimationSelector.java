@@ -2,9 +2,9 @@ package gamelogic;
 
 import java.util.Random;
 import entity.Enemy;
-import entity.Narong;
-import entity.Nattee;
-import entity.Pto;
+import entity.Narang;
+import entity.Natchan;
+import entity.Pta;
 
 public class SlideAnimationSelector {
 
@@ -15,13 +15,13 @@ public class SlideAnimationSelector {
         double initialPositionX = 150; // Default start position (left)
         double endToPositionX = 1039; // Default end position (right)
 
-        if (enemy instanceof Nattee) {
+        if (enemy instanceof Natchan) {
             speed = 1.0; // Fixed speed
-        } else if (enemy instanceof Narong) {
+        } else if (enemy instanceof Narang) {
             // Narong has three possible speeds: 0.75, 0.5, or 1.0
             double[] narongSpeeds = {0.75, 0.5, 1.0};
             speed = narongSpeeds[rand.nextInt(narongSpeeds.length)];
-        } else if (enemy instanceof Pto) {
+        } else if (enemy instanceof Pta) {
             // Pto has four possible speeds: 0.75, 0.5, 0.25, or 1.0
             double[] ptoSpeeds = {0.75, 0.5, 0.25, 1.0};
             speed = ptoSpeeds[rand.nextInt(ptoSpeeds.length)];

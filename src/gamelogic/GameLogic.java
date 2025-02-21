@@ -3,9 +3,9 @@ package gamelogic;
 
 import ability.UltimatePower;
 import entity.Enemy;
-import entity.Narong;
+import entity.Narang;
 import entity.Player;
-import entity.Pto;
+import entity.Pta;
 import gui.EnemyPane;
 import gui.GameBattlePane;
 import gui.PlayerPane;
@@ -45,7 +45,7 @@ public class GameLogic {
 	    Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
 
 	    if (player.isPoisoned()) {
-	        Narong enemyPoison = (Narong) enemy;
+	        Narang enemyPoison = (Narang) enemy;
 	        gameBattlePane.getGameMenuBattlePane().switchToDialogue(
 	            player.updateStatusEffects(enemyPoison.getPoisonDamage(), playerPane)
 	        );
@@ -89,8 +89,8 @@ public class GameLogic {
 		//play both transition
 		SequentialTransition attackAnimation = new SequentialTransition(moveForward,moveBackward);
 		attackAnimation.setOnFinished(e -> {
-			if(enemy instanceof UltimatePower || enemy instanceof Pto) {
-				Pto enemyUltimate = (Pto)enemy ;
+			if(enemy instanceof UltimatePower || enemy instanceof Pta) {
+				Pta enemyUltimate = (Pta)enemy ;
 				if(enemyUltimate.canUseUltimate()) {
 					String enemyUltimateDialogue = enemyUltimate.useUltimate(player, playerPane , enemyPane);
 					gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyUltimateDialogue);

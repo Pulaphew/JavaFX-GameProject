@@ -8,15 +8,15 @@ import ability.UltimatePower;
 import gui.EnemyPane;
 import gui.PlayerPane;
 
-public class Pto extends Enemy implements UltimatePower, HealingPower {
+public class Pta extends Enemy implements UltimatePower, HealingPower {
 
 	private int ultimateTurnCount;
 	private boolean isImmortal;
 	private int immorTalTurnCount;
 	private Random rand = new Random();
 
-	public Pto(int maxHealth, int attackPower) {
-		super(" To The ProgMeth ", maxHealth, attackPower);
+	public Pta(int maxHealth, int attackPower) {
+		super(" PTa The ProgMeth ", maxHealth, attackPower);
 		this.setUltimateTurnCount(0);
 		this.setImmortal(false);
 		this.setImmorTalTurnCount(0);

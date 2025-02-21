@@ -10,13 +10,13 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Narong extends Enemy implements PoisonousPower {
+public class Narang extends Enemy implements PoisonousPower {
 
 	private Random rand = new Random();
 	private int poisonDamage;
 
-	public Narong(int maxHealth, int attackPower) {
-		super(" Narongdech The DigLo ", maxHealth, attackPower);
+	public Narang(int maxHealth, int attackPower) {
+		super(" Narang The DigLo ", maxHealth, attackPower);
 		// set default as 10
 		this.setPoisonDamage(2);
 		this.setAttackAccuracy(0.4);

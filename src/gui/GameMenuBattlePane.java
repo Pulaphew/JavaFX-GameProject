@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import entity.Enemy;
-import entity.Narong;
+import entity.Narang;
 import entity.Player;
 import gamelogic.AttackZone;
 import gamelogic.GameLogic;
@@ -349,7 +349,7 @@ public class GameMenuBattlePane extends Pane {
 			if (scene != null) {
 				if (player.isPoisoned()) {
 					scene.setOnMouseClicked(e -> switchToDialogue(
-							player.updateStatusEffects(((Narong) enemy).getPoisonDamage(), playerPane)));
+							player.updateStatusEffects(((Narang) enemy).getPoisonDamage(), playerPane)));
 				}
 			}
 		} else {

@@ -6,7 +6,6 @@ import ability.HealingPower;
 import ability.UltimatePower;
 import gamelogic.AttackZone;
 import gui.EnemyPane;
-import gui.EntityPane;
 import gui.PlayerPane;
 
 public class Player extends Entity implements UltimatePower , HealingPower {
@@ -16,7 +15,7 @@ public class Player extends Entity implements UltimatePower , HealingPower {
 	private Random rand;
 
 	public Player(int maxHealth, int attackPower) {
-		super("CEDT Student ", maxHealth, attackPower);
+		super("Croissant Student ", maxHealth, attackPower);
 		this.ultimateTurnCount = 0;
 		this.poisonTurnCount = 0;
 		this.isPoisoned = false;
@@ -55,8 +54,8 @@ public class Player extends Entity implements UltimatePower , HealingPower {
 			
 			// case if enemy is Immortal
 			// Since takeDamage(int damage) is void , cannot return String , then I put it in this instead
-			if(target instanceof Pto) {
-				Pto enemyImmortal = (Pto)target;
+			if(target instanceof Pta) {
+				Pta enemyImmortal = (Pta)target;
 				if(enemyImmortal.isImmortal()) {
 					String dialogueCanNotDealDamage = enemyImmortal.getName() + " is immortal right now! no damage taken.";
 					return dialogueCanNotDealDamage;
