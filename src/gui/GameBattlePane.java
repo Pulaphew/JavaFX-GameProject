@@ -1,11 +1,13 @@
 package gui;
 
+import gamelogic.SceneController;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class GameBattlePane extends AnchorPane {
 
@@ -36,6 +38,8 @@ public class GameBattlePane extends AnchorPane {
 		surrenderButton.setLayoutX(20);
 		surrenderButton.setLayoutY(15);
 		surrenderButton.setFont(new Font(30));
+		//action
+		surrenderButton.setOnAction(e -> SceneController.showSurrenderConfirmation((Stage)this.getScene().getWindow(),this));
 		
 		//add all node into game battle pane
 		this.getChildren().addAll(

@@ -13,6 +13,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameLogic {
@@ -22,129 +23,118 @@ public class GameLogic {
 	private PlayerPane playerPane;
 	private EnemyPane enemyPane;
 	private GameBattlePane gameBattlePane;
-	private boolean isPlayerTurn = true ;
-	
+	private boolean isPlayerTurn = true;
+	private Stage primaryStage;
+
 	private final String image_path_player_battle = ClassLoader.getSystemResource("PlayerBattle.png").toString();
-	private final String image_path_player_takedamage = ClassLoader.getSystemResource("PlayerTakeDamage.png").toString();
-	
-	
-	public GameLogic(Player player, Enemy enemy, PlayerPane playerPane, EnemyPane enemyPane,
+	private final String image_path_player_takedamage = ClassLoader.getSystemResource("PlayerTakeDamage.png")
+			.toString();
+
+	public GameLogic(Stage primaryStage, Player player, Enemy enemy, PlayerPane playerPane, EnemyPane enemyPane,
 			GameBattlePane gameBattlePane) {
+		this.primaryStage = primaryStage;
 		this.player = player;
 		this.enemy = enemy;
 		this.playerPane = playerPane;
 		this.enemyPane = enemyPane;
-		this.gameBattlePane = gameBattlePane ;
+		this.gameBattlePane = gameBattlePane;
 	}
-	
+
 	// when player completes an attack
 	public void onPlayerAttackCompletes() {
 		playerPane.setPlayerSprite(image_path_player_battle);
-	    if (enemy.getCurrentHealth() <= 0) {
-	        endGame(true); // Player wins!
-	        return;
-	    }
+		if (!enemy.isAlive()) {
+			endGame(true); // Player wins!
+			return;
+		}
 
-	    isPlayerTurn = false;
+		isPlayerTurn = false;
 
-	    Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
+		Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
 
-	    if (player.isPoisoned()) {
-	        Narang enemyPoison = (Narang) enemy;
-	        gameBattlePane.getGameMenuBattlePane().switchToDialogue(
-	            player.updateStatusEffects(enemyPoison.getPoisonDamage(), playerPane)
-	        );
+		if (player.isPoisoned()) {
+			Narang enemyPoison = (Narang) enemy;
+			gameBattlePane.getGameMenuBattlePane()
+					.switchToDialogue(player.updateStatusEffects(enemyPoison.getPoisonDamage(), playerPane));
 
-	        if (scene != null) {
-	            scene.setOnMouseClicked(ev -> {
-	                scene.setOnMouseClicked(null); // Clear previous event
-	                gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
+			if (scene != null) {
+				scene.setOnMouseClicked(ev -> {
+					scene.setOnMouseClicked(null); // Clear previous event
+					gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
 
-	                scene.setOnMouseClicked(e -> {
-	                    scene.setOnMouseClicked(null); // Clear event again
-	                    enemyAttack();
-	                });
-	            });
-	        }
-	    } else {
-	        gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
+					scene.setOnMouseClicked(e -> {
+						scene.setOnMouseClicked(null); // Clear event again
+						enemyAttack();
+					});
+				});
+			}
+		} else {
+			gameBattlePane.getGameMenuBattlePane().switchToDialogue("Enemy's Turn!!");
 
-	        if (scene != null) {
-	            scene.setOnMouseClicked(e -> enemyAttack());
-	        }
-	    }
+			if (scene != null) {
+				scene.setOnMouseClicked(e -> enemyAttack());
+			}
+		}
 	}
 
-	
 	private void enemyAttack() {
-	    Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
-	    
-	    if (scene != null) {
-	        scene.setOnMouseClicked(null);
-	        scene.setOnKeyPressed(null);
-	    }
+		Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
 
-	    // Enemy attack animation (move forward and back)
-	    TranslateTransition moveForward = new TranslateTransition(Duration.millis(200), enemyPane);
-	    moveForward.setByX(-30);
+		if (scene != null) {
+			scene.setOnMouseClicked(null);
+			scene.setOnKeyPressed(null);
+		}
 
-	    TranslateTransition moveBackward = new TranslateTransition(Duration.millis(200), enemyPane);
-	    moveBackward.setByX(30);
+		// Enemy attack animation (move forward and back)
+		TranslateTransition moveForward = new TranslateTransition(Duration.millis(200), enemyPane);
+		moveForward.setByX(-30);
 
-	    SequentialTransition attackAnimation = new SequentialTransition(moveForward, moveBackward);
-	    attackAnimation.setOnFinished(e -> handleEnemyAttack(scene));
+		TranslateTransition moveBackward = new TranslateTransition(Duration.millis(200), enemyPane);
+		moveBackward.setByX(30);
 
-	    attackAnimation.play();
+		SequentialTransition attackAnimation = new SequentialTransition(moveForward, moveBackward);
+		attackAnimation.setOnFinished(e -> handleEnemyAttack(scene));
+
+		attackAnimation.play();
 	}
 
 	private void handleEnemyAttack(Scene scene) {
-	    String[] enemyDialogue;
+		String[] enemyDialogue;
 
-	    if (enemy instanceof UltimatePower || enemy instanceof Pta) {
-	        Pta enemyUltimate = (Pta) enemy;
-	        if (enemyUltimate.canUseUltimate()) {
-	            enemyDialogue = new String[]{enemyUltimate.useUltimate(player, playerPane, enemyPane)};
-	        } else {
-	            enemyDialogue = enemy.attack(player, playerPane, enemyPane);
-	        }
-	    } else {
-	        enemyDialogue = enemy.attack(player, playerPane, enemyPane);
-	    }
+		if (enemy instanceof UltimatePower || enemy instanceof Pta) {
+			Pta enemyUltimate = (Pta) enemy;
+			if (enemyUltimate.canUseUltimate()) {
+				enemyDialogue = new String[] { enemyUltimate.useUltimate(player, playerPane, enemyPane) };
+			} else {
+				enemyDialogue = enemy.attack(player, playerPane, enemyPane);
+			}
+		} else {
+			enemyDialogue = enemy.attack(player, playerPane, enemyPane);
+		}
 
-	    playerPane.setPlayerSprite(image_path_player_takedamage);
-	    playerPane.animationPlayerTakeDamage();
-	    gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
+		playerPane.setPlayerSprite(image_path_player_takedamage);
+		playerPane.animationPlayerTakeDamage();
+		gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
 
-	    if (scene != null) {
-	        scene.setOnMouseClicked(ev -> {
-	            playerPane.setPlayerSprite(image_path_player_battle);
-	            gameBattlePane.getGameMenuBattlePane().advanceDialogue();
-	        });
-	    }
-	}
-
-	
-	private void onEnemyAttackCompletes() {
-		if(player.getCurrentHealth()<=0) {
-			endGame(false); //Player loses
+		if (!player.isAlive()) {
+			endGame(false);
 			return;
 		}
-		isPlayerTurn = true ;
-		gameBattlePane.getGameMenuBattlePane().switchToDialogue("Your Turn!");
-		gameBattlePane.getGameMenuBattlePane().returnToGameMenu();
+
+		if (scene != null) {
+			scene.setOnMouseClicked(ev -> {
+				playerPane.setPlayerSprite(image_path_player_battle);
+				gameBattlePane.getGameMenuBattlePane().advanceDialogue();
+			});
+		}
 	}
-	
+
 	private void endGame(boolean playerWins) {
-		if(playerWins) {
-			gameBattlePane.getGameMenuBattlePane().switchToDialogue("You Win");
-		}
-		else {
-			gameBattlePane.getGameMenuBattlePane().switchToDialogue("You Lose");
-		}
+		SceneController.showEndGameScreen(gameBattlePane, primaryStage, playerWins);
 	}
 
 	public GameBattlePane getGameBattlePane() {
 		return gameBattlePane;
 	}
-	
+
 }

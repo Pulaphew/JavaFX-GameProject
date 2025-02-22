@@ -1,15 +1,8 @@
 package gameApplication;
 
-import entity.Enemy;
-import entity.Narang;
-import entity.Natchan;
-import entity.Player;
-import entity.Pta;
-import gamelogic.GameLogic;
-import gui.*;
+import gui.StagePane;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -17,31 +10,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Create game components
-            Player player = new Player(100, 2);
-            Enemy enemy = new Pta(100, 2);
+            // Create the StagePane which will allow the user to choose a level
+            StagePane stagePane = new StagePane(primaryStage);
 
-            PlayerPane playerPane = new PlayerPane(player);
-            EnemyPane enemyPane = new EnemyPane(enemy);
-            GameMenuBattlePane gameMenuBattlePane = new GameMenuBattlePane(player, enemy, playerPane, enemyPane);
-
-            // Create GameBattlePane (which includes the background)
-            GameBattlePane gameBattlePane = new GameBattlePane(playerPane, enemyPane, gameMenuBattlePane);
-            
-            // Root pane
-            Pane root = new Pane();
-            root.getChildren().add(gameBattlePane);
-
-            // Set up the scene
-            Scene scene = new Scene(root, 1360, 768);
-            primaryStage.setTitle("Battle System");
+            // Set up the initial scene with StagePane
+            Scene scene = new Scene(stagePane, 1360, 768);
+            primaryStage.setTitle("Select Level");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
-            primaryStage.show();  // Scene is now fully initialized
-
-            // Initialize GameLogic AFTER primaryStage.show()
-            GameLogic gameLogic = new GameLogic(player, enemy, playerPane, enemyPane, gameBattlePane);
-            gameMenuBattlePane.setGameLogic(gameLogic);
+            primaryStage.show();
 
         } catch (Exception e) {
             e.printStackTrace();

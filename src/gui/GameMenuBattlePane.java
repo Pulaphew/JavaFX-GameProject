@@ -108,7 +108,7 @@ public class GameMenuBattlePane extends Pane {
 	// method to switch after stop slider then show dialogue battle
 	// display situation in Damage
 	public void switchToDialogue(String... dialogue) {
-
+		
 		if (dialogue == null || dialogue.length == 0)
 			return;
 
@@ -175,9 +175,11 @@ public class GameMenuBattlePane extends Pane {
 	public void switchAttackToSlideBar() {
 
 		// handle multiple trigger
-		if (isAttackingProgress)
-			return;
-
+		if (isAttackingProgress) return;
+		
+		Scene scene = this.getScene();
+		if(scene != null) scene.setOnMouseClicked(null);
+		
 		isAttackingProgress = true;
 		menuButton.setVisible(false);
 
@@ -214,23 +216,23 @@ public class GameMenuBattlePane extends Pane {
 			PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 			delay.setOnFinished(ev -> {
 				switchToDialogue("You did not do Attack!!!");
-				Scene scene = this.getScene();
-				if (scene != null) {
-					scene.setOnMouseClicked(ev2 -> {
-						scene.setOnMouseClicked(null);
+				Scene currentScene1 = this.getScene();
+				if (currentScene1 != null) {
+					currentScene1.setOnMouseClicked(ev2 -> {
+						currentScene1.setOnMouseClicked(null);
 						gameLogic.onPlayerAttackCompletes();
 					});
 				}
 			});
 			delay.play();
 		});
-
-		Scene scene = this.getScene();
-		if (scene != null) {
-			scene.setOnKeyPressed(event -> {
+		
+		Scene currentScene2 = this.getScene() ;
+		if (currentScene2 != null) {
+			currentScene2.setOnKeyPressed(event -> {
 				if (event.getCode() == KeyCode.A) {
 					stopSlider();
-					scene.setOnKeyPressed(null);
+					currentScene2.setOnKeyPressed(null);
 				}
 			});
 		}
