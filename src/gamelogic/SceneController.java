@@ -69,7 +69,11 @@ public class SceneController {
     }
     
     public static void showEndGameScreen(GameBattlePane gameBattlePane, Stage primaryStage, boolean playerWins) {
-        // Background overlay (dim screen)
+        
+    	Scene scene = gameBattlePane.getScene() ;
+    	if(scene != null) scene.setOnMouseClicked(null);
+    	
+    	// Background overlay (dim screen)
         Rectangle background = new Rectangle(1360, 400);
         background.setFill(Color.BLACK);
         background.setOpacity(0.5);
@@ -87,7 +91,7 @@ public class SceneController {
         // Return Button
         Button returnButton = new Button("Return To Stage");
         returnButton.setPrefSize(230, 75);
-        returnButton.setStyle("-fx-font-size: 30px;");
+        returnButton.setStyle("-fx-font-size: 20px;");
         returnButton.setOnAction(e -> primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768)));
 
         // Add components to the VBox
@@ -106,10 +110,13 @@ public class SceneController {
 
     
     public static void showSurrenderConfirmation(Stage primaryStage, GameBattlePane gameBattlePane) {
-        AnchorPane surrenderPane = new AnchorPane();
+    	Scene scene = gameBattlePane.getScene() ;
+    	if(scene != null) scene.setOnMouseClicked(null);
+    	
+    	AnchorPane surrenderPane = new AnchorPane();
         surrenderPane.setPrefSize(600, 300);
         surrenderPane.setLayoutX((1360 - 600) / 2); // Center horizontally
-        surrenderPane.setLayoutY((768 - 300) / 2);  // Center vertically
+        surrenderPane.setLayoutY((768 - 300) / 2 - 10);  // Center vertically
 
         // Background rectangle with opacity
         Rectangle background = new Rectangle(600, 300);
@@ -119,7 +126,7 @@ public class SceneController {
         // Confirmation text
         Text confirmText = new Text("Are you sure you want to surrender?");
         confirmText.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-fill: white;");
-        confirmText.setLayoutX(75);
+        confirmText.setLayoutX(50);
         confirmText.setLayoutY(120);
 
         // Continue Button (closes the pane)
