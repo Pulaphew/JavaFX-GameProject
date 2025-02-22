@@ -23,7 +23,11 @@ public class GameLogic {
 	private EnemyPane enemyPane;
 	private GameBattlePane gameBattlePane;
 	private boolean isPlayerTurn = true ;
-
+	
+	private final String image_path_player_battle = ClassLoader.getSystemResource("PlayerBattle.png").toString();
+	private final String image_path_player_takedamage = ClassLoader.getSystemResource("PlayerTakeDamage.png").toString();
+	
+	
 	public GameLogic(Player player, Enemy enemy, PlayerPane playerPane, EnemyPane enemyPane,
 			GameBattlePane gameBattlePane) {
 		this.player = player;
@@ -35,6 +39,7 @@ public class GameLogic {
 	
 	// when player completes an attack
 	public void onPlayerAttackCompletes() {
+		playerPane.setPlayerSprite(image_path_player_battle);
 	    if (enemy.getCurrentHealth() <= 0) {
 	        endGame(true); // Player wins!
 	        return;
@@ -72,43 +77,52 @@ public class GameLogic {
 
 	
 	private void enemyAttack() {
-		Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
-		
-		if(scene != null) {
-			scene.setOnMouseClicked(null);
-			scene.setOnKeyPressed(null);
-		}
-		
-		// enemy attack animation
-		TranslateTransition moveForward = new TranslateTransition(Duration.millis(200),enemyPane);
-		moveForward.setByX(-30); //move to left (negative value)
-		
-		TranslateTransition moveBackward = new TranslateTransition(Duration.millis(200),enemyPane);
-		moveBackward.setByX(30); //move back to original position
-		
-		//play both transition
-		SequentialTransition attackAnimation = new SequentialTransition(moveForward,moveBackward);
-		attackAnimation.setOnFinished(e -> {
-			if(enemy instanceof UltimatePower || enemy instanceof Pta) {
-				Pta enemyUltimate = (Pta)enemy ;
-				if(enemyUltimate.canUseUltimate()) {
-					String enemyUltimateDialogue = enemyUltimate.useUltimate(player, playerPane , enemyPane);
-					gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyUltimateDialogue);
-				}
-				else {
-					String[] enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
-					gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
-				}
-			}else {
-				String[] enemyDialogue = this.enemy.attack(player,playerPane,enemyPane);
-				gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
-			}
-			if(scene != null) {
-				scene.setOnMouseClicked(ev -> gameBattlePane.getGameMenuBattlePane().advanceDialogue());
-			}
-		});
-		attackAnimation.play();
+	    Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
+	    
+	    if (scene != null) {
+	        scene.setOnMouseClicked(null);
+	        scene.setOnKeyPressed(null);
+	    }
+
+	    // Enemy attack animation (move forward and back)
+	    TranslateTransition moveForward = new TranslateTransition(Duration.millis(200), enemyPane);
+	    moveForward.setByX(-30);
+
+	    TranslateTransition moveBackward = new TranslateTransition(Duration.millis(200), enemyPane);
+	    moveBackward.setByX(30);
+
+	    SequentialTransition attackAnimation = new SequentialTransition(moveForward, moveBackward);
+	    attackAnimation.setOnFinished(e -> handleEnemyAttack(scene));
+
+	    attackAnimation.play();
 	}
+
+	private void handleEnemyAttack(Scene scene) {
+	    String[] enemyDialogue;
+
+	    if (enemy instanceof UltimatePower || enemy instanceof Pta) {
+	        Pta enemyUltimate = (Pta) enemy;
+	        if (enemyUltimate.canUseUltimate()) {
+	            enemyDialogue = new String[]{enemyUltimate.useUltimate(player, playerPane, enemyPane)};
+	        } else {
+	            enemyDialogue = enemy.attack(player, playerPane, enemyPane);
+	        }
+	    } else {
+	        enemyDialogue = enemy.attack(player, playerPane, enemyPane);
+	    }
+
+	    playerPane.setPlayerSprite(image_path_player_takedamage);
+	    playerPane.animationPlayerTakeDamage();
+	    gameBattlePane.getGameMenuBattlePane().switchToDialogue(enemyDialogue);
+
+	    if (scene != null) {
+	        scene.setOnMouseClicked(ev -> {
+	            playerPane.setPlayerSprite(image_path_player_battle);
+	            gameBattlePane.getGameMenuBattlePane().advanceDialogue();
+	        });
+	    }
+	}
+
 	
 	private void onEnemyAttackCompletes() {
 		if(player.getCurrentHealth()<=0) {

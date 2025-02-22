@@ -89,7 +89,8 @@ public class Pta extends Enemy implements UltimatePower, HealingPower {
 	        this.setImmorTalTurnCount(this.getImmorTalTurnCount() - 1);
 	        System.out.println(this.getName() + " have immortal " + this.getImmorTalTurnCount() + " turn");
 	        if (this.getImmorTalTurnCount() <= 0) {
-	            this.setImmortal(false);
+	            this.setImmortal(false); 
+	            enemyPane.updateEnemyImmortal();
 	            String noImmortal =  this.getName() + "\n is no longer immortal!";
 	            dialogues.add(noImmortal);
 	        }

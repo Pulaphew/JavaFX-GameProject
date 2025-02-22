@@ -4,6 +4,7 @@ package gui;
 import entity.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -40,7 +41,7 @@ public class PlayerPane extends EntityPane{
 		playerHeathBarGreen.setLayoutY(210);
 		
 		//edit image here
-		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
+		String image_path = ClassLoader.getSystemResource("PlayerBattle.png").toString();
 		playerSprite.setImage(new Image(image_path)) ;
 		this.getChildren().addAll(playerSprite,playerHeathBarRed,playerHeathBarGreen) ;
 	}
@@ -65,6 +66,34 @@ public class PlayerPane extends EntityPane{
 		
 		timeline.setCycleCount(1);
 		timeline.play();
+	}
+	
+	public void animationPlayerAction() {
+		TranslateTransition moveForward = new TranslateTransition(Duration.seconds(0.3), this);
+		moveForward.setByX(50); // move to right
+		moveForward.setAutoReverse(true);
+		moveForward.setCycleCount(2);// move forward then back
+
+		// reset position after play animation
+		moveForward.setOnFinished(e -> this.setTranslateX(0));
+
+		moveForward.play();
+	}
+	
+	public void animationPlayerTakeDamage() {
+		TranslateTransition moveBackward = new TranslateTransition(Duration.seconds(0.3), this);
+		moveBackward.setByX(-50); // move to left
+		moveBackward.setAutoReverse(true);
+		moveBackward.setCycleCount(2); // move left then back
+
+		// reset position after play animation
+		moveBackward.setOnFinished(e -> this.setTranslateX(0));
+
+		moveBackward.play();
+	}
+	
+	public void setPlayerSprite(String imagePath) {
+		this.playerSprite.setImage(new Image(imagePath));
 	}
 	
 	public ImageView getPlayerSprite() {

@@ -5,7 +5,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="imagesrc/|imagesrc/|imagesrc/" kind="src" path="src"/>
-	<classpathentry kind="src" path="src/imagesrc"/>
+	<classpathentry excluding="imagesrc/|imagesrc/|imagesrc/|imagesrc/player/|imagesrc/playerSprite/|csssrc/|csssrc/Press_Start_2P/|stylesrc/Press_Start_2P/|stylesrc/|stylesrc/Press_Start_2P/|fontstyle/" kind="src" path="src"/>
+	<classpathentry excluding="player/|playerSprite/" kind="src" path="src/imagesrc"/>
+	<classpathentry kind="src" path="src/imagesrc/playerSprite"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

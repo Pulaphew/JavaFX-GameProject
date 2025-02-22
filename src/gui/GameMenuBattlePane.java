@@ -24,7 +24,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class GameMenuBattlePane extends Pane {
-
+	
+	private String image_path_player_attack = ClassLoader.getSystemResource("PlayerAttack.png").toString();
+	
 	private Random rand = new Random();
 
 	private Player player;
@@ -80,22 +82,21 @@ public class GameMenuBattlePane extends Pane {
 		// Create Button
 		attackButton = new Button("Attack");
 		attackButton.setPrefSize(250, 90);
-		attackButton.setFont(new Font(30));
+		GuiStyle.styleButton(attackButton);
 		// action
 		attackButton.setOnAction(e -> switchAttackToSlideBar());
 
 		ultimateButton = new Button("Ultimate\n" + this.player.getUltimateTurnCount());
 		ultimateButton.setPrefSize(250, 90);
-		ultimateButton.setFont(new Font(25));
-		ultimateButton.setWrapText(true);
 		ultimateButton.setTextAlignment(TextAlignment.CENTER);
+		GuiStyle.styleButton(ultimateButton);
 		ultimateButton.setDisable(true); // can use when ultimatecount >= 5
 		// action
 		ultimateButton.setOnAction(e -> playerUseUltimate());
 
 		evadeButton = new Button("Evade");
 		evadeButton.setPrefSize(250, 90);
-		evadeButton.setFont(new Font(30));
+		GuiStyle.styleButton(evadeButton);
 		// action
 		evadeButton.setOnAction(e -> playerUseEvade());
 
@@ -255,7 +256,8 @@ public class GameMenuBattlePane extends Pane {
 		String[] allDialogue = dialogues.toArray(new String[0]);
 
 		// play animation player action
-		animationPlayerAction();
+		playerPane.setPlayerSprite(image_path_player_attack);
+		playerPane.animationPlayerAction();
 
 		PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 		delay.setOnFinished(e -> {
@@ -311,8 +313,9 @@ public class GameMenuBattlePane extends Pane {
 
 		this.ultimateButton.setDisable(true);
 		this.ultimateButton.setText("Ultimate\n" + this.player.getUltimateTurnCount());
-
-		animationPlayerAction();
+		
+		playerPane.setPlayerSprite(image_path_player_attack);
+		playerPane.animationPlayerAction();
 
 		String[] allDialogue = dialogues.toArray(new String[0]);
 
@@ -366,17 +369,6 @@ public class GameMenuBattlePane extends Pane {
 		}
 	}
 
-	private void animationPlayerAction() {
-		TranslateTransition moveForward = new TranslateTransition(Duration.seconds(0.3), playerPane);
-		moveForward.setByX(50); // move to right
-		moveForward.setAutoReverse(true);
-		moveForward.setCycleCount(2);// move forward then back
-
-		// reset position after play animation
-		moveForward.setOnFinished(e -> playerPane.setTranslateX(0));
-
-		moveForward.play();
-	}
 
 	public void setGameLogic(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;
