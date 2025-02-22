@@ -23,12 +23,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SceneController {
+	
+	private static Player player ;
+	private static Enemy enemy ;
 
     public static void switchToGameScene(Stage primaryStage, String enemyType) {
         try {
             // Create the player
-            Player player = new Player(5, 2);
-            Enemy enemy;
+            player = new Player(5, 1000);
 
             // Determine which enemy to use based on the button click
             switch (enemyType) {
@@ -106,8 +108,6 @@ public class SceneController {
         // Add overlay to GameBattlePane
         gameBattlePane.getChildren().add(overlayPane);
     }
-
-
     
     public static void showSurrenderConfirmation(Stage primaryStage, GameBattlePane gameBattlePane) {
     	Scene scene = gameBattlePane.getScene() ;
@@ -152,4 +152,7 @@ public class SceneController {
         gameBattlePane.getChildren().add(surrenderPane);
     }
 
+	public static Enemy getEnemy() {
+		return enemy;
+	}
 }

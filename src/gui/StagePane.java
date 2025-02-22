@@ -1,5 +1,9 @@
 package gui;
 
+import entity.Enemy;
+import entity.Narang;
+import entity.Pta;
+import gamelogic.GameLogic;
 import gamelogic.SceneController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -73,8 +77,22 @@ public class StagePane extends AnchorPane {
 		imageStageTextContainer.setLayoutX(295);
 		imageStageTextContainer.setLayoutY(115);
 		imageStageTextContainer.getChildren().add(imageStage);
-
+		
+		updateStageButton(stageOne,stageTwo,stageThree);
+		
 		// Add all components to the AnchorPane
 		this.getChildren().addAll(backgroundImage, imageStageTextContainer, buttonContainer , backButton);
 	}
+	
+	private static void updateStageButton(Button stage1Button, Button stage2Button, Button stage3Button) {
+	    // Stage 1 (Always enabled for Natchan)
+	    stage1Button.setDisable(false); // Always enabled
+
+	    // Stage 2 (Enabled only if Natchan is defeated)
+	    stage2Button.setDisable(!GameLogic.isNatchanDefeated());
+
+	    // Stage 3 (Enabled only if Narang is defeated)
+	    stage3Button.setDisable(!GameLogic.isNarangDefeated());
+	}
+
 }
