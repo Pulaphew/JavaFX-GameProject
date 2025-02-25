@@ -8,6 +8,7 @@ import entity.Player;
 import gui.EnemyPane;
 import gui.GameBattlePane;
 import gui.GameMenuBattlePane;
+import gui.GameStartMenuPane;
 import gui.PlayerPane;
 import gui.StagePane;
 import javafx.geometry.Pos;
@@ -30,7 +31,7 @@ public class SceneController {
     public static void switchToGameScene(Stage primaryStage, String enemyType) {
         try {
             // Create the player
-            player = new Player(5, 1000);
+            player = new Player(100, 1000);
 
             // Determine which enemy to use based on the button click
             switch (enemyType) {
@@ -68,6 +69,18 @@ public class SceneController {
             e.printStackTrace();
             System.err.println("Error loading the game.");
         }
+    }
+    
+    public static void switchToGameStartMenu(Stage primaryStage) {
+    	 GameStartMenuPane startMenu = new GameStartMenuPane(primaryStage, () -> {
+             Scene stageScene = new Scene(new StagePane(primaryStage), 1360, 768);
+             primaryStage.setScene(stageScene);
+             primaryStage.setTitle("Select Level");
+         });
+
+         Scene startScene = new Scene(startMenu, 1360, 768);
+         primaryStage.setScene(startScene);
+         primaryStage.setTitle("Game Start Menu");
     }
     
     public static void showEndGameScreen(GameBattlePane gameBattlePane, Stage primaryStage, boolean playerWins) {

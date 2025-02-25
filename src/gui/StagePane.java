@@ -26,9 +26,9 @@ public class StagePane extends AnchorPane {
 	private Pane imageStageTextContainer;
 	private ImageView imageStage;
 
-	private final String backgroundImagePath = ClassLoader.getSystemResource("croissantTestImage.jpg").toString();
-	private final String imageStagePath = ClassLoader.getSystemResource("croissantTestImage.jpg").toString();
-
+	private final String backgroundImagePath = ClassLoader.getSystemResource("croissantBackground.png").toString();
+	private final String imageStagePath = ClassLoader.getSystemResource("StagesText.png").toString();
+	
 	public StagePane(Stage primaryStage) {
 		this.setPrefSize(1360, 768);
 
@@ -36,15 +36,13 @@ public class StagePane extends AnchorPane {
 		backgroundImage.setImage(new Image(backgroundImagePath));
 		backgroundImage.setFitWidth(1360);
 		backgroundImage.setFitHeight(768);
-		backgroundImage.setPreserveRatio(true);
+//		backgroundImage.setPreserveRatio(true);
 
 		imageStage = new ImageView();
 		imageStage.setImage(new Image(imageStagePath));
-		imageStage.setFitWidth(770);
-		imageStage.setFitHeight(115);
+		imageStage.setFitWidth(500);
+		imageStage.setFitHeight(400);
 		imageStage.setPreserveRatio(true);
-		imageStage.setLayoutX(295);
-		imageStage.setLayoutY(115);
 
 		buttonContainer = new HBox(100);
 		buttonContainer.setLayoutX(255);
@@ -55,14 +53,20 @@ public class StagePane extends AnchorPane {
 
 		stageOne = new Button("1");
 		stageOne.setPrefSize(100, 100);
+		GuiStyle.styleStageButton(stageOne);
+		GuiStyle.addHoverEffect(stageOne);
 		stageOne.setOnAction(e -> SceneController.switchToGameScene(primaryStage, "Natchan"));
 
 		stageTwo = new Button("2");
 		stageTwo.setPrefSize(100, 100);
+		GuiStyle.styleStageButton(stageTwo);
+		GuiStyle.addHoverEffect(stageTwo);
 		stageTwo.setOnAction(e -> SceneController.switchToGameScene(primaryStage, "Narang"));
 
 		stageThree = new Button("3");
 		stageThree.setPrefSize(100, 100);
+		GuiStyle.styleStageButton(stageThree);
+		GuiStyle.addHoverEffect(stageThree);
 		stageThree.setOnAction(e -> SceneController.switchToGameScene(primaryStage, "Pta"));
 
 		backButton = new Button("Back");
@@ -70,12 +74,18 @@ public class StagePane extends AnchorPane {
 		backButton.setLayoutX(20);
 		backButton.setLayoutY(15);
 		backButton.setFont(new Font(30));
+		GuiStyle.styleCroissantButton(backButton,200);
+		GuiStyle.addHoverEffect(backButton);
+		//action
+		backButton.setOnAction(e -> SceneController.switchToGameStartMenu(primaryStage));
 		
 		buttonContainer.getChildren().addAll(stageOne, stageTwo, stageThree);
 
 		imageStageTextContainer = new Pane();
-		imageStageTextContainer.setLayoutX(295);
-		imageStageTextContainer.setLayoutY(115);
+		imageStageTextContainer.setPrefWidth(685);
+		imageStageTextContainer.setPrefHeight(169);
+		imageStageTextContainer.setLayoutX(430);
+		imageStageTextContainer.setLayoutY(200);
 		imageStageTextContainer.getChildren().add(imageStage);
 		
 		updateStageButton(stageOne,stageTwo,stageThree);
@@ -94,5 +104,4 @@ public class StagePane extends AnchorPane {
 	    // Stage 3 (Enabled only if Narang is defeated)
 	    stage3Button.setDisable(!GameLogic.isNarangDefeated());
 	}
-
 }

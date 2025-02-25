@@ -31,10 +31,10 @@ public class Natchan extends Enemy implements HealingPower {
 				};
 		String dialogue = message[rand.nextInt(2)] + this.getName() + " deal damage to you ,equal " + this.getAttackPower();
 		
-		double healingChance = rand.nextDouble();
+		int healingChance = rand.nextInt(20);
 
 		// 35 % chance to increase healing counter
-		if (healingChance < 0.35) {
+		if (healingChance < 7) {
 			HealingCounter++;
 		}
 		if (HealingCounter == 3) {

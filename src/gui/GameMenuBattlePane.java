@@ -82,21 +82,21 @@ public class GameMenuBattlePane extends Pane {
 		// Create Button
 		attackButton = new Button("Attack");
 		attackButton.setPrefSize(250, 90);
-		GuiStyle.styleButton(attackButton);
+		GuiStyle.styleGameButton(attackButton);
 		// action
 		attackButton.setOnAction(e -> switchAttackToSlideBar());
 
 		ultimateButton = new Button("Ultimate\n" + this.player.getUltimateTurnCount());
 		ultimateButton.setPrefSize(250, 90);
 		ultimateButton.setTextAlignment(TextAlignment.CENTER);
-		GuiStyle.styleButton(ultimateButton);
+		GuiStyle.styleGameButton(ultimateButton);
 		ultimateButton.setDisable(true); // can use when ultimatecount >= 5
 		// action
 		ultimateButton.setOnAction(e -> playerUseUltimate());
 
 		evadeButton = new Button("Evade");
 		evadeButton.setPrefSize(250, 90);
-		GuiStyle.styleButton(evadeButton);
+		GuiStyle.styleGameButton(evadeButton);
 		// action
 		evadeButton.setOnAction(e -> playerUseEvade());
 

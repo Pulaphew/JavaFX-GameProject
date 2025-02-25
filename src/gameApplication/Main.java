@@ -1,5 +1,6 @@
 package gameApplication;
 
+import gui.GameStartMenuPane;
 import gui.StagePane;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,12 +11,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Create the StagePane which will allow the user to choose a level
-            StagePane stagePane = new StagePane(primaryStage);
+            // Create the start menu pane
+            GameStartMenuPane startMenu = new GameStartMenuPane(primaryStage, () -> {
+                // When "Start Game" is clicked, switch to StagePane
+                StagePane stagePane = new StagePane(primaryStage);
+                Scene stageScene = new Scene(stagePane, 1360, 768);
+                primaryStage.setScene(stageScene);
+                primaryStage.setTitle("Select Level");
+            });
 
-            // Set up the initial scene with StagePane
-            Scene scene = new Scene(stagePane, 1360, 768);
-            primaryStage.setTitle("Select Level");
+            // Set up the initial scene with GameStartMenuPane
+            Scene scene = new Scene(startMenu, 1360, 768);
+            primaryStage.setTitle("Game Start Menu");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
