@@ -1,5 +1,6 @@
 package gui;
 
+import gamelogic.SceneController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,7 +32,7 @@ public class GameStartMenuPane extends StackPane {
         GuiStyle.styleCroissantButton(exitButton,350);
 
         startButton.setOnAction(e -> onStartGame.run());
-        //tutorialButton.setOnAction(e -> primaryStage.setScene(new Scene(new Tutorial(primaryStage), 1360, 768)));
+        tutorialButton.setOnAction(e -> SceneController.switchToTutorial(primaryStage));
         exitButton.setOnAction(e -> primaryStage.close());
 
         // ปุ่มเครดิต

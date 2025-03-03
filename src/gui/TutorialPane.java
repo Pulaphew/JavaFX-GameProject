@@ -1,5 +1,6 @@
 package gui;
 
+import gamelogic.SceneController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -101,6 +102,7 @@ public class TutorialPane extends AnchorPane {
         // Back button (Bottom Left)
         Button backButton = new Button("BACK");
         backButton.setStyle(buttonStyle);
+        backButton.setOnAction(e -> SceneController.switchToGameStartMenu(primaryStage));
         AnchorPane.setBottomAnchor(backButton, 20.0);
         AnchorPane.setLeftAnchor(backButton, 20.0);
         

@@ -11,6 +11,7 @@ import gui.GameMenuBattlePane;
 import gui.GameStartMenuPane;
 import gui.PlayerPane;
 import gui.StagePane;
+import gui.TutorialPane;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -121,6 +122,13 @@ public class SceneController {
         // Add overlay to GameBattlePane
         gameBattlePane.getChildren().add(overlayPane);
     }
+    
+    public static void switchToTutorial(Stage primaryStage) {
+        Scene tutorialScene = new Scene(new TutorialPane(primaryStage), 1360, 768);
+        primaryStage.setScene(tutorialScene);
+        primaryStage.setTitle("Tutorial");
+    }
+
     
     public static void showSurrenderConfirmation(Stage primaryStage, GameBattlePane gameBattlePane) {
     	Scene scene = gameBattlePane.getScene() ;
