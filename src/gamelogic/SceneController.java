@@ -102,7 +102,7 @@ public class SceneController {
 		endGamePane.setAlignment(Pos.CENTER); // Center contents
 
 		// Victory or Defeat message
-		String message = playerWins ? "You Win!" : "You Lost!";
+		String message = playerWins ? "You Win!" : "You Lose!";
 		Text endGameText = new Text(message);
 		endGameText.setStyle("-fx-font-size: 50px; -fx-font-weight: bold; -fx-fill: white;");
 
