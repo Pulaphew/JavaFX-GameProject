@@ -8,7 +8,8 @@ import javafx.scene.text.TextAlignment;
 public class GuiStyle {
     
     public static void styleCroissantButton(Button button , int width) {
-        ImageView buttonImage = new ImageView(new Image("file:src/imagesrc/buttonImage/Button.png"));
+    	String path = ClassLoader.getSystemResource("Button.png").toString();
+        ImageView buttonImage = new ImageView(new Image(path));
         
         buttonImage.setFitWidth(width);
         buttonImage.setPreserveRatio(true);
@@ -29,7 +30,8 @@ public class GuiStyle {
     }
     
     public static void styleStageButton(Button button) {
-    	ImageView buttonStageImage = new ImageView(new Image("file:src/imagesrc/buttonImage/ButtonStage.png"));
+    	String path = ClassLoader.getSystemResource("ButtonStage.png").toString();
+    	ImageView buttonStageImage = new ImageView(new Image(path));
     	
     	buttonStageImage.setFitWidth(100);
     	buttonStageImage.setFitHeight(100);

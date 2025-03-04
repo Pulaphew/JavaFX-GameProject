@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 public class GameStartMenuPane extends StackPane {
     public GameStartMenuPane(Stage primaryStage, Runnable onStartGame) {
         // พื้นหลัง
-        ImageView background = new ImageView(new Image("file:src/imagesrc/backgroundImage/startMenu.png"));
+        ImageView background = new ImageView(new Image(ClassLoader.getSystemResource("startMenu.png").toString()));
         background.setFitWidth(1360);
         background.setFitHeight(768);
 
@@ -37,7 +37,7 @@ public class GameStartMenuPane extends StackPane {
 
         // ปุ่มเครดิต
         Button infoButton = new Button();
-        ImageView creditImage = new ImageView(new Image("file:src/imagesrc/buttonImage/Credits.png"));
+        ImageView creditImage = new ImageView(new Image(ClassLoader.getSystemResource("Credits.png").toString()));
 
         creditImage.setFitWidth(100);  
         creditImage.setPreserveRatio(true);
@@ -75,7 +75,7 @@ public class GameStartMenuPane extends StackPane {
         grid.setAlignment(Pos.CENTER);
 
         // ข้อมูลผู้พัฒนา
-        String credit_image_path = "file:src/imagesrc/credits/exsax.png";
+        String credit_image_path = ClassLoader.getSystemResource("exsax.png").toString();
         Developer[] developers = {
             new Developer("Pula - kun", "6733154321", "Developer", credit_image_path),
             new Developer("Tong - kun", "6733257321", "Developer", credit_image_path),

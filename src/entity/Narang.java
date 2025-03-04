@@ -7,8 +7,6 @@ import ability.PoisonousPower;
 import gui.EnemyPane;
 import gui.PlayerPane;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class Narang extends Enemy implements PoisonousPower {
 
@@ -19,10 +17,9 @@ public class Narang extends Enemy implements PoisonousPower {
 		super(" Narang The DigLo ", maxHealth, attackPower);
 		// set default as 10
 		this.setPoisonDamage(2);
-		this.setAttackAccuracy(0.4);
-		this.battle_img = "file:src/imagesrc/enemySprite/Narang/Battle.png";
-		this.attack_img = "file:src/imagesrc/enemySprite/Narang/Attack.png";
-		this.takeDamage_img = "file:src/imagesrc/enemySprite/Narang/TakeDamage.png";
+		this.battle_img = ClassLoader.getSystemResource("NarangBattle.png").toString();
+		this.attack_img = ClassLoader.getSystemResource("NarangAttack.png").toString();
+		this.takeDamage_img = ClassLoader.getSystemResource("NarangTakeDamage.png").toString();
 		this.backgroundStage = ClassLoader.getSystemResource("bgStage2.png").toString();
 	}
 

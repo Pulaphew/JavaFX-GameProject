@@ -10,12 +10,10 @@ public abstract class Enemy extends Entity {
 	public String takeDamage_img = "";
 	public String backgroundStage = "";
 	
-	private double attackAccuracy ;
 	
 	
 	public Enemy(String name, int maxHealth, int attackPower) {
 		super(name, maxHealth, attackPower);
-		this.setAttackAccuracy(0.2);
 	}
 	
 	public abstract String[] attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) ;
@@ -27,15 +25,6 @@ public abstract class Enemy extends Entity {
 				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
 				+ "]";
 	}
-
-	public double getAttackAccuracy() {
-		return attackAccuracy;
-	}
-
-	public void setAttackAccuracy(double attackAccuracy) {
-		this.attackAccuracy = attackAccuracy;
-	}
-
 //	get image sprite
 	public String getBattle_img() {
 		return battle_img;

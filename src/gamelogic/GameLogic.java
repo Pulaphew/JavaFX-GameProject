@@ -1,8 +1,6 @@
 package gamelogic;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import ability.UltimatePower;
 import entity.Enemy;
@@ -13,7 +11,6 @@ import entity.Pta;
 import gui.EnemyPane;
 import gui.GameBattlePane;
 import gui.PlayerPane;
-import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Scene;
@@ -27,7 +24,6 @@ public class GameLogic {
     private PlayerPane playerPane;
     private EnemyPane enemyPane;
     private GameBattlePane gameBattlePane;
-    private boolean isPlayerTurn = true;
     private Stage primaryStage;
     
     // Store defeated enemies
@@ -54,8 +50,6 @@ public class GameLogic {
             endGame(true); // Player wins!
             return;
         }
-
-        isPlayerTurn = false;
 
         Scene scene = gameBattlePane.getGameMenuBattlePane().getScene();
 

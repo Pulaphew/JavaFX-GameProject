@@ -13,14 +13,14 @@ public class Natchan extends Enemy implements HealingPower {
 	Random rand = new Random();
 
 	public Natchan(int maxHealth, int attackPower) {
-		super(" Natchan The DataAlgo ", maxHealth, attackPower);
-		this.setHealingCounter(0);
-		this.setAttackAccuracy(0.2);
-		this.battle_img = "file:src/imagesrc/enemySprite/Natchan/Battle.png";
-		this.attack_img = "file:src/imagesrc/enemySprite/Natchan/Attack.png";
-		this.takeDamage_img = "file:src/imagesrc/enemySprite/Natchan/TakeDamage.png";
-		this.backgroundStage = ClassLoader.getSystemResource("bgStage1.png").toString();
+	    super("Natchan The DataAlgo", maxHealth, attackPower);
+	    this.setHealingCounter(0);
+	    this.battle_img = ClassLoader.getSystemResource("NatchanBattle.png").toString();
+	    this.attack_img = ClassLoader.getSystemResource("NatchanAttack.png").toString();
+	    this.takeDamage_img = ClassLoader.getSystemResource("NatchanTakeDamage.png").toString();
+	    this.backgroundStage = ClassLoader.getSystemResource("bgStage1.png").toString();
 	}
+
 
 	@Override
 	public String[] attack(Entity target , PlayerPane playerPane , EnemyPane enemyPane) {

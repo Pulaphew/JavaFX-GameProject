@@ -16,16 +16,16 @@ public class Pta extends Enemy implements UltimatePower, HealingPower {
 	private Random rand = new Random();
 
 	public Pta(int maxHealth, int attackPower) {
-		super(" PTa The ProgMeth ", maxHealth, attackPower);
-		this.setUltimateTurnCount(0);
-		this.setImmortal(false);
-		this.setImmorTalTurnCount(0);
-		this.setAttackAccuracy(0.6);
-		this.battle_img = "file:src/imagesrc/enemySprite/Pta/Battle.png";
-		this.attack_img = "file:src/imagesrc/enemySprite/Pta/Attack.png";
-		this.takeDamage_img = "file:src/imagesrc/enemySprite/Pta/TakeDamage.png";
-		this.backgroundStage = ClassLoader.getSystemResource("bgStage3.png").toString();
+	    super("PTa The ProgMeth", maxHealth, attackPower);
+	    this.setUltimateTurnCount(0);
+	    this.setImmortal(false);
+	    this.setImmorTalTurnCount(0);
+	    this.battle_img = ClassLoader.getSystemResource("PtaBattle.png").toString();
+	    this.attack_img = ClassLoader.getSystemResource("PtaAttack.png").toString();
+	    this.takeDamage_img = ClassLoader.getSystemResource("PtaTakeDamage.png").toString();
+	    this.backgroundStage = ClassLoader.getSystemResource("bgStage3.png").toString();
 	}
+
 	
 	@Override
 	public String heal() {

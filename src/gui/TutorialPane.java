@@ -35,7 +35,7 @@ public class TutorialPane extends AnchorPane {
 	private int currentIndex = 0;
 	private final Text descriptionText;
 	private final ImageView imageView;
-	private final String image_background = "file:src/imagesrc/backgroundImage/croissantBackground.png";
+	private final String image_background = ClassLoader.getSystemResource("croissantBackground.png").toString();
 
 	public TutorialPane(Stage primaryStage) {
 		setPadding(new Insets(20, 20, 20, 20));

@@ -20,12 +20,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class GameMenuBattlePane extends Pane {
 	
 	private String image_path_player_attack = ClassLoader.getSystemResource("PlayerAttack.png").toString();
+	private Text pressA ;
 	
 	private Random rand = new Random();
 
@@ -66,7 +68,15 @@ public class GameMenuBattlePane extends Pane {
 		this.setPrefSize(1360, 250);
 		this.setLayoutX(0);
 		this.setLayoutY(530);
-
+		
+		//Tip Text
+		pressA = new Text("Press \'A\' To Stop!!!");
+		pressA.setStyle("-fx-font-size: 40px; " + "-fx-font-weight: bold; " + "-fx-fill: white; " + "-fx-stroke: black; "
+				+ "-fx-stroke-width: 2px;");
+		pressA.setLayoutX(520);
+		pressA.setLayoutY(50);
+		pressA.setVisible(false);
+		
 		Rectangle backgroundMenu = new Rectangle(1360, 250);
 		backgroundMenu.setFill(Color.BLACK);
 		backgroundMenu.setOpacity(0.5);
@@ -105,7 +115,7 @@ public class GameMenuBattlePane extends Pane {
 
 		menuButton.getChildren().addAll(attackButton, ultimateButton, evadeButton);
 
-		this.getChildren().addAll(backgroundMenu, menuButton, dialoguePane);
+		this.getChildren().addAll(backgroundMenu, menuButton, dialoguePane,pressA);
 	}
 
 	// method to switch after stop slider then show dialogue battle
@@ -176,7 +186,9 @@ public class GameMenuBattlePane extends Pane {
 	// method to switch to slide bar after action with attack button
 	// after switch , Slider will start Transition animation
 	public void switchAttackToSlideBar() {
-
+		
+		pressA.setVisible(true);
+		
 		// handle multiple trigger
 		if (isAttackingProgress) return;
 		
@@ -218,6 +230,7 @@ public class GameMenuBattlePane extends Pane {
 		slideAnimation.setOnFinished(e -> {
 			PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 			delay.setOnFinished(ev -> {
+				pressA.setVisible(false);
 				switchToDialogue("You did not do Attack!!!");
 				Scene currentScene1 = this.getScene();
 				if (currentScene1 != null) {
@@ -234,6 +247,7 @@ public class GameMenuBattlePane extends Pane {
 		if (currentScene2 != null) {
 			currentScene2.setOnKeyPressed(event -> {
 				if (event.getCode() == KeyCode.A) {
+					pressA.setVisible(false);
 					stopSlider();
 					currentScene2.setOnKeyPressed(null);
 				}
