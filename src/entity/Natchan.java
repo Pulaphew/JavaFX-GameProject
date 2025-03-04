@@ -7,7 +7,7 @@ import gui.EnemyPane;
 import gui.PlayerPane;
 
 public class Natchan extends Enemy implements HealingPower {
-
+	
 	private int HealingCounter;
 	private int HealingUltimateCharge;
 	Random rand = new Random();
@@ -16,6 +16,10 @@ public class Natchan extends Enemy implements HealingPower {
 		super(" Natchan The DataAlgo ", maxHealth, attackPower);
 		this.setHealingCounter(0);
 		this.setAttackAccuracy(0.2);
+		this.battle_img = "file:src/imagesrc/enemySprite/Natchan/Battle.png";
+		this.attack_img = "file:src/imagesrc/enemySprite/Natchan/Attack.png";
+		this.takeDamage_img = "file:src/imagesrc/enemySprite/Natchan/TakeDamage.png";
+		this.backgroundStage = ClassLoader.getSystemResource("bgStage1.png").toString();
 	}
 
 	@Override

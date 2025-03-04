@@ -5,12 +5,17 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="imagesrc/|imagesrc/|imagesrc/|imagesrc/player/|imagesrc/playerSprite/|csssrc/|csssrc/Press_Start_2P/|stylesrc/Press_Start_2P/|stylesrc/|stylesrc/Press_Start_2P/|fontstyle/|imagesrc/buttonImage/|imagesrc/credits/|imagesrc/textImage/|imagesrc/backgroundImage/" kind="src" path="src"/>
-	<classpathentry excluding="player/|playerSprite/|buttonImage/|credits/|textImage/|backgroundImage/" kind="src" path="src/imagesrc"/>
+	<classpathentry excluding="imagesrc/|imagesrc/|imagesrc/|imagesrc/player/|imagesrc/playerSprite/|csssrc/|csssrc/Press_Start_2P/|stylesrc/Press_Start_2P/|stylesrc/|stylesrc/Press_Start_2P/|fontstyle/|imagesrc/buttonImage/|imagesrc/credits/|imagesrc/textImage/|imagesrc/backgroundImage/|imagesrc/enemySprite/Natchan/|imagesrc/enemySprite/|imagesrc/enemySprite/Narang/|imagesrc/enemySprite/Pta/|imagesrc/testTutorialImage/" kind="src" path="src"/>
+	<classpathentry excluding="player/|playerSprite/|buttonImage/|credits/|textImage/|backgroundImage/|enemySprite/Natchan/|enemySprite/|enemySprite/Narang/|enemySprite/Pta/|testTutorialImage/" kind="src" path="src/imagesrc"/>
 	<classpathentry kind="src" path="src/imagesrc/playerSprite"/>
 	<classpathentry kind="src" path="src/imagesrc/buttonImage"/>
 	<classpathentry kind="src" path="src/imagesrc/credits"/>
 	<classpathentry kind="src" path="src/imagesrc/textImage"/>
 	<classpathentry kind="src" path="src/imagesrc/backgroundImage"/>
+	<classpathentry kind="src" path="src/imagesrc/enemySprite/Natchan"/>
+	<classpathentry excluding="Natchan/|Narang/|Pta/" kind="src" path="src/imagesrc/enemySprite"/>
+	<classpathentry kind="src" path="src/imagesrc/enemySprite/Narang"/>
+	<classpathentry kind="src" path="src/imagesrc/enemySprite/Pta"/>
+	<classpathentry kind="src" path="src/imagesrc/testTutorialImage"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

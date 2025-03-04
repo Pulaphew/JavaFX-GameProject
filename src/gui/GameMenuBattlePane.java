@@ -74,7 +74,7 @@ public class GameMenuBattlePane extends Pane {
 		// Create HBox contain Button
 		menuButton = new HBox();
 		menuButton.setPrefSize(920, 180);
-		menuButton.setLayoutX(220);
+		menuButton.setLayoutX(60);
 		menuButton.setLayoutY(35);
 		menuButton.setSpacing(100);
 		menuButton.setAlignment(Pos.CENTER);
@@ -82,21 +82,24 @@ public class GameMenuBattlePane extends Pane {
 		// Create Button
 		attackButton = new Button("Attack");
 		attackButton.setPrefSize(250, 90);
-		GuiStyle.styleGameButton(attackButton);
+		GuiStyle.styleCroissantButton(attackButton,250);
+		GuiStyle.addHoverEffect(attackButton);
 		// action
 		attackButton.setOnAction(e -> switchAttackToSlideBar());
 
 		ultimateButton = new Button("Ultimate\n" + this.player.getUltimateTurnCount());
 		ultimateButton.setPrefSize(250, 90);
 		ultimateButton.setTextAlignment(TextAlignment.CENTER);
-		GuiStyle.styleGameButton(ultimateButton);
+		GuiStyle.styleCroissantButton(ultimateButton,250);
+		GuiStyle.addHoverEffect(ultimateButton);
 		ultimateButton.setDisable(true); // can use when ultimatecount >= 5
 		// action
 		ultimateButton.setOnAction(e -> playerUseUltimate());
 
 		evadeButton = new Button("Evade");
 		evadeButton.setPrefSize(250, 90);
-		GuiStyle.styleGameButton(evadeButton);
+		GuiStyle.styleCroissantButton(evadeButton,250);
+		GuiStyle.addHoverEffect(evadeButton);
 		// action
 		evadeButton.setOnAction(e -> playerUseEvade());
 
@@ -260,6 +263,8 @@ public class GameMenuBattlePane extends Pane {
 		// play animation player action
 		playerPane.setPlayerSprite(image_path_player_attack);
 		playerPane.animationPlayerAction();
+		
+		enemyPane.setEnemySprite(enemy.getTakeDamage_img());
 
 		PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 		delay.setOnFinished(e -> {

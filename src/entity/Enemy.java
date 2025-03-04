@@ -5,6 +5,11 @@ import gui.PlayerPane;
 
 public abstract class Enemy extends Entity {
 	
+	public String battle_img = "";
+	public String attack_img= "";
+	public String takeDamage_img = "";
+	public String backgroundStage = "";
+	
 	private double attackAccuracy ;
 	
 	
@@ -30,7 +35,22 @@ public abstract class Enemy extends Entity {
 	public void setAttackAccuracy(double attackAccuracy) {
 		this.attackAccuracy = attackAccuracy;
 	}
-	
-	
 
+//	get image sprite
+	public String getBattle_img() {
+		return battle_img;
+	}
+
+	public String getAttack_img() {
+		return attack_img;
+	}
+
+	public String getTakeDamage_img() {
+		return takeDamage_img;
+	}
+
+	public String getBackgroundStage() {
+		return backgroundStage;
+	}
+	
 }

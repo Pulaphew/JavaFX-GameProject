@@ -21,6 +21,10 @@ public class Pta extends Enemy implements UltimatePower, HealingPower {
 		this.setImmortal(false);
 		this.setImmorTalTurnCount(0);
 		this.setAttackAccuracy(0.6);
+		this.battle_img = "file:src/imagesrc/enemySprite/Pta/Battle.png";
+		this.attack_img = "file:src/imagesrc/enemySprite/Pta/Attack.png";
+		this.takeDamage_img = "file:src/imagesrc/enemySprite/Pta/TakeDamage.png";
+		this.backgroundStage = ClassLoader.getSystemResource("bgStage3.png").toString();
 	}
 	
 	@Override

@@ -9,6 +9,7 @@ import gui.EnemyPane;
 import gui.GameBattlePane;
 import gui.GameMenuBattlePane;
 import gui.GameStartMenuPane;
+import gui.GuiStyle;
 import gui.PlayerPane;
 import gui.StagePane;
 import gui.TutorialPane;
@@ -107,7 +108,8 @@ public class SceneController {
         // Return Button
         Button returnButton = new Button("Return To Stage");
         returnButton.setPrefSize(230, 75);
-        returnButton.setStyle("-fx-font-size: 20px;");
+        GuiStyle.styleCroissantButton(returnButton, 230);
+        GuiStyle.addHoverEffect(returnButton);
         returnButton.setOnAction(e -> primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768)));
 
         // Add components to the VBox
@@ -153,19 +155,26 @@ public class SceneController {
         // Continue Button (closes the pane)
         Button continueButton = new Button("Continue");
         continueButton.setPrefSize(150, 60);
-        continueButton.setLayoutX(100);
+        continueButton.setLayoutX(0);
         continueButton.setLayoutY(180);
         continueButton.setStyle("-fx-font-size: 20px;");
-        continueButton.setOnAction(e -> gameBattlePane.getChildren().remove(surrenderPane));
+        GuiStyle.styleCroissantButton(continueButton, 150);
+        GuiStyle.addHoverEffect(continueButton);
+        continueButton.setOnAction(e -> {
+        	GameBattlePane.setConfirmationOpen(false);
+        	gameBattlePane.getChildren().remove(surrenderPane);
+        });
 
         // Surrender Button (go back to StagePane)
         Button surrenderButton = new Button("Surrender");
         surrenderButton.setPrefSize(150, 60);
-        surrenderButton.setLayoutX(350);
+        surrenderButton.setLayoutX(250);
         surrenderButton.setLayoutY(180);
         surrenderButton.setStyle("-fx-font-size: 20px;");
+        
         surrenderButton.setOnAction(e -> primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768)));
-
+        GuiStyle.styleCroissantButton(surrenderButton, 150);
+        GuiStyle.addHoverEffect(surrenderButton);
         // Add components to the pane
         surrenderPane.getChildren().addAll(background, confirmText, continueButton, surrenderButton);
 

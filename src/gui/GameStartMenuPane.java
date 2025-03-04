@@ -17,19 +17,19 @@ import javafx.stage.Stage;
 public class GameStartMenuPane extends StackPane {
     public GameStartMenuPane(Stage primaryStage, Runnable onStartGame) {
         // พื้นหลัง
-        ImageView background = new ImageView(new Image("file:src/imagesrc/background.jpg"));
+        ImageView background = new ImageView(new Image("file:src/imagesrc/backgroundImage/startMenu.png"));
         background.setFitWidth(1360);
         background.setFitHeight(768);
 
         // ปุ่มต่างๆ
         Button startButton = new Button("StartGame");
-        GuiStyle.styleCroissantButton(startButton,350);
+        GuiStyle.styleCroissantButton(startButton,200);
 
         Button tutorialButton = new Button("Tutorial");
-        GuiStyle.styleCroissantButton(tutorialButton,350);
+        GuiStyle.styleCroissantButton(tutorialButton,200);
 
         Button exitButton = new Button("Exit");
-        GuiStyle.styleCroissantButton(exitButton,350);
+        GuiStyle.styleCroissantButton(exitButton,200);
 
         startButton.setOnAction(e -> onStartGame.run());
         tutorialButton.setOnAction(e -> SceneController.switchToTutorial(primaryStage));
@@ -58,8 +58,8 @@ public class GameStartMenuPane extends StackPane {
 
         VBox menuBox = new VBox(1, startButton, tutorialButton, exitButton);
         menuBox.setAlignment(Pos.CENTER_LEFT);
-        menuBox.setTranslateX(70);
-
+        menuBox.setTranslateX(170);
+        menuBox.setTranslateY(120); // Moves it down by 50 pixels
         getChildren().addAll(background, menuBox, infoButton);
     }
 

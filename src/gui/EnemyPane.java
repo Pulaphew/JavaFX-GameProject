@@ -43,8 +43,8 @@ public class EnemyPane extends EntityPane {
 		enemyHeathBarGreen.setLayoutY(210);
 		
 		//edit image here
-		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
-		enemySprite.setImage(new Image(image_path)) ;
+//		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
+		enemySprite.setImage(new Image(enemy.getBattle_img())) ;
 		this.getChildren().addAll(enemySprite,enemyHeathBarRed,enemyHeathBarGreen) ;
 	}
 	
@@ -87,5 +87,17 @@ public class EnemyPane extends EntityPane {
 				enemyHeathBarGreen.setFill(Color.GREEN);
 			}
 		}
+	}
+	
+	public void setEnemySprite(String imagePath) {
+		this.enemySprite.setImage(new Image(imagePath));
+	}
+	
+	public ImageView getEnemySprite() {
+		return enemySprite ;
+	}
+	
+	public String getEnemyBackgroundStage() {
+		return enemy.getBackgroundStage();
 	}
 }

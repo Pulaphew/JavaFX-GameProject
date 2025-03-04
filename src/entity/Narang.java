@@ -20,6 +20,10 @@ public class Narang extends Enemy implements PoisonousPower {
 		// set default as 10
 		this.setPoisonDamage(2);
 		this.setAttackAccuracy(0.4);
+		this.battle_img = "file:src/imagesrc/enemySprite/Narang/Battle.png";
+		this.attack_img = "file:src/imagesrc/enemySprite/Narang/Attack.png";
+		this.takeDamage_img = "file:src/imagesrc/enemySprite/Narang/TakeDamage.png";
+		this.backgroundStage = ClassLoader.getSystemResource("bgStage2.png").toString();
 	}
 
 	@Override

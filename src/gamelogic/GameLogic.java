@@ -91,6 +91,8 @@ public class GameLogic {
             scene.setOnMouseClicked(null);
             scene.setOnKeyPressed(null);
         }
+        
+        enemyPane.setEnemySprite(enemy.getAttack_img());
 
         // Enemy attack animation (move forward and back)
         TranslateTransition moveForward = new TranslateTransition(Duration.millis(200), enemyPane);
@@ -107,7 +109,7 @@ public class GameLogic {
 
     private void handleEnemyAttack(Scene scene) {
         String[] enemyDialogue;
-
+        enemyPane.setEnemySprite(enemy.getBattle_img());
         if (enemy instanceof UltimatePower || enemy instanceof Pta) {
             Pta enemyUltimate = (Pta) enemy;
             if (enemyUltimate.canUseUltimate()) {

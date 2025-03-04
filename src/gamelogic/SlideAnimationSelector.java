@@ -13,7 +13,7 @@ public class SlideAnimationSelector {
     public static SlideAnimationSettings getSetting(Enemy enemy) {
         double speed = 1.0; // Default speed
         double initialPositionX = 150; // Default start position (left)
-        double endToPositionX = 1039; // Default end position (right)
+        double endToPositionX = 1190; // Default end position (right)
 
         if (enemy instanceof Natchan) {
             speed = 1.0; // Fixed speed
@@ -28,7 +28,7 @@ public class SlideAnimationSelector {
 
             // 50% chance to start from right instead of left
             if (rand.nextBoolean()) {
-                initialPositionX = 1039; // Start from right
+                initialPositionX = 1190; // Start from right
                 endToPositionX = 150; // Move to left
             }
         } else {
