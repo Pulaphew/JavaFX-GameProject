@@ -157,7 +157,7 @@ public class SceneController {
 		// Continue Button (closes the pane)
 		Button continueButton = new Button("Continue");
 		continueButton.setPrefSize(150, 60);
-		continueButton.setLayoutX(100);
+		continueButton.setLayoutX(0);
 		continueButton.setLayoutY(180);
 		continueButton.setStyle("-fx-font-size: 20px;");
 		GuiStyle.styleCroissantButton(continueButton, 150);
@@ -167,7 +167,7 @@ public class SceneController {
 		// Surrender Button (go back to StagePane)
 		Button surrenderButton = new Button("Surrender");
 		surrenderButton.setPrefSize(150, 60);
-		surrenderButton.setLayoutX(350);
+		surrenderButton.setLayoutX(250);
 		surrenderButton.setLayoutY(180);
 		surrenderButton.setStyle("-fx-font-size: 20px;");
 		GuiStyle.styleCroissantButton(surrenderButton, 150);
