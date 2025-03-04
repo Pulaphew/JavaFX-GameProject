@@ -33,12 +33,12 @@ public class SceneController {
 	public static void switchToGameScene(Stage primaryStage, String enemyType) {
 		try {
 			// Create the player
-			player = new Player(120, 50);
+			player = new Player(120, 35);
 
 			// Determine which enemy to use based on the button click
 			switch (enemyType) {
 			case "Natchan":
-				enemy = new Natchan(500, 20);
+				enemy = new Natchan(800, 20);
 				break;
 			case "Narang":
 				enemy = new Narang(750, 20);

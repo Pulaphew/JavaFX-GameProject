@@ -16,7 +16,7 @@ public class Narang extends Enemy implements PoisonousPower {
 	public Narang(int maxHealth, int attackPower) {
 		super(" Narang The DigLo ", maxHealth, attackPower);
 		// set default as 10
-		this.setPoisonDamage(2);
+		this.setPoisonDamage(6);
 		this.battle_img = ClassLoader.getSystemResource("NarangBattle.png").toString();
 		this.attack_img = ClassLoader.getSystemResource("NarangAttack.png").toString();
 		this.takeDamage_img = ClassLoader.getSystemResource("NarangTakeDamage.png").toString();

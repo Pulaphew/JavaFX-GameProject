@@ -68,7 +68,7 @@ public class Player extends Entity implements UltimatePower, HealingPower {
 			enemyPane.updateHealthBar();
 
 			// double failUltimateCharge = rand.nextInt(7);
-			double successUltimateCharge = rand.nextInt(11);
+			double successUltimateCharge = rand.nextInt(10);
 			if (successUltimateCharge > 2) {
 				if (this.ultimateTurnCount < 5)
 					this.ultimateTurnCount++;
@@ -91,7 +91,7 @@ public class Player extends Entity implements UltimatePower, HealingPower {
 	public String useUltimate(Entity target, PlayerPane playerPane, EnemyPane enemyPane) {
 		String dialogue = "";
 		if (this.canUseUltimate()) {
-			int dealDamage = this.getAttackPower() * (rand.nextInt(3) + 1) * 5;
+			int dealDamage = this.getAttackPower() * 10;
 			target.takeDamage(dealDamage);
 			this.ultimateTurnCount = 0;
 			dialogue = "Ultimate!!! Deal Damage To " + target.getName() + " total " + dealDamage + " damage.";
@@ -141,9 +141,9 @@ public class Player extends Entity implements UltimatePower, HealingPower {
 
 	private int plusDamageFromZone(AttackZone sliderZone) {
 		if (sliderZone == AttackZone.GREEN) {
-			return 10;
+			return 30;
 		} else if (sliderZone == AttackZone.YELLOW) {
-			return 5;
+			return 20;
 		}
 		// Red Zone return 0
 		return 0;
