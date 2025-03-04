@@ -25,10 +25,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class GameMenuBattlePane extends Pane {
-	
+
 	private String image_path_player_attack = ClassLoader.getSystemResource("PlayerAttack.png").toString();
-	private Text pressA ;
-	
+	private Text pressA;
+
 	private Random rand = new Random();
 
 	private Player player;
@@ -68,15 +68,15 @@ public class GameMenuBattlePane extends Pane {
 		this.setPrefSize(1360, 250);
 		this.setLayoutX(0);
 		this.setLayoutY(530);
-		
-		//Tip Text
+
+		// Tip Text
 		pressA = new Text("Press \'A\' To Stop!!!");
-		pressA.setStyle("-fx-font-size: 40px; " + "-fx-font-weight: bold; " + "-fx-fill: white; " + "-fx-stroke: black; "
-				+ "-fx-stroke-width: 2px;");
+		pressA.setStyle("-fx-font-size: 40px; " + "-fx-font-weight: bold; " + "-fx-fill: white; "
+				+ "-fx-stroke: black; " + "-fx-stroke-width: 2px;");
 		pressA.setLayoutX(520);
 		pressA.setLayoutY(50);
 		pressA.setVisible(false);
-		
+
 		Rectangle backgroundMenu = new Rectangle(1360, 250);
 		backgroundMenu.setFill(Color.BLACK);
 		backgroundMenu.setOpacity(0.5);
@@ -92,7 +92,7 @@ public class GameMenuBattlePane extends Pane {
 		// Create Button
 		attackButton = new Button("Attack");
 		attackButton.setPrefSize(250, 90);
-		GuiStyle.styleCroissantButton(attackButton,250);
+		GuiStyle.styleCroissantButton(attackButton, 250);
 		GuiStyle.addHoverEffect(attackButton);
 		// action
 		attackButton.setOnAction(e -> switchAttackToSlideBar());
@@ -100,7 +100,7 @@ public class GameMenuBattlePane extends Pane {
 		ultimateButton = new Button("Ultimate\n" + this.player.getUltimateTurnCount());
 		ultimateButton.setPrefSize(250, 90);
 		ultimateButton.setTextAlignment(TextAlignment.CENTER);
-		GuiStyle.styleCroissantButton(ultimateButton,250);
+		GuiStyle.styleCroissantButton(ultimateButton, 250);
 		GuiStyle.addHoverEffect(ultimateButton);
 		ultimateButton.setDisable(true); // can use when ultimatecount >= 5
 		// action
@@ -108,20 +108,20 @@ public class GameMenuBattlePane extends Pane {
 
 		evadeButton = new Button("Evade");
 		evadeButton.setPrefSize(250, 90);
-		GuiStyle.styleCroissantButton(evadeButton,250);
+		GuiStyle.styleCroissantButton(evadeButton, 250);
 		GuiStyle.addHoverEffect(evadeButton);
 		// action
 		evadeButton.setOnAction(e -> playerUseEvade());
 
 		menuButton.getChildren().addAll(attackButton, ultimateButton, evadeButton);
 
-		this.getChildren().addAll(backgroundMenu, menuButton, dialoguePane,pressA);
+		this.getChildren().addAll(backgroundMenu, menuButton, dialoguePane, pressA);
 	}
 
 	// method to switch after stop slider then show dialogue battle
 	// display situation in Damage
 	public void switchToDialogue(String... dialogue) {
-		
+
 		if (dialogue == null || dialogue.length == 0)
 			return;
 
@@ -186,15 +186,17 @@ public class GameMenuBattlePane extends Pane {
 	// method to switch to slide bar after action with attack button
 	// after switch , Slider will start Transition animation
 	public void switchAttackToSlideBar() {
-		
+
 		pressA.setVisible(true);
-		
+
 		// handle multiple trigger
-		if (isAttackingProgress) return;
-		
+		if (isAttackingProgress)
+			return;
+
 		Scene scene = this.getScene();
-		if(scene != null) scene.setOnMouseClicked(null);
-		
+		if (scene != null)
+			scene.setOnMouseClicked(null);
+
 		isAttackingProgress = true;
 		menuButton.setVisible(false);
 
@@ -242,8 +244,8 @@ public class GameMenuBattlePane extends Pane {
 			});
 			delay.play();
 		});
-		
-		Scene currentScene2 = this.getScene() ;
+
+		Scene currentScene2 = this.getScene();
 		if (currentScene2 != null) {
 			currentScene2.setOnKeyPressed(event -> {
 				if (event.getCode() == KeyCode.A) {
@@ -277,7 +279,7 @@ public class GameMenuBattlePane extends Pane {
 		// play animation player action
 		playerPane.setPlayerSprite(image_path_player_attack);
 		playerPane.animationPlayerAction();
-		
+
 		enemyPane.setEnemySprite(enemy.getTakeDamage_img());
 
 		PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
@@ -334,7 +336,7 @@ public class GameMenuBattlePane extends Pane {
 
 		this.ultimateButton.setDisable(true);
 		this.ultimateButton.setText("Ultimate\n" + this.player.getUltimateTurnCount());
-		
+
 		playerPane.setPlayerSprite(image_path_player_attack);
 		playerPane.animationPlayerAction();
 
@@ -353,15 +355,15 @@ public class GameMenuBattlePane extends Pane {
 		ArrayList<String> dialogues = new ArrayList<String>();
 		String dialogueEvade;
 		// evade chance = 60 % (3 in 5)
-		int evadeChance = rand.nextInt(5);
-		boolean isEvadeSuccessful = evadeChance < 3;
+		int evadeChance = rand.nextInt(6);
+		boolean isEvadeSuccessful = evadeChance < 4;
 
 		if (isEvadeSuccessful) {
 			dialogueEvade = "Evade Success!! You dodged " + enemy.getName() + " attack 555+";
 			dialogues.add(dialogueEvade);
 
 			// 30% chance to heal after evading
-			if (rand.nextInt(10) < 7) {
+			if (rand.nextInt(10) < 8) {
 				dialogues.add(player.heal());
 				playerPane.updateHealthBar();
 			}
@@ -389,7 +391,6 @@ public class GameMenuBattlePane extends Pane {
 			}
 		}
 	}
-
 
 	public void setGameLogic(GameLogic gameLogic) {
 		this.gameLogic = gameLogic;
