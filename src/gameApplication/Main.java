@@ -4,6 +4,7 @@ import gui.GameStartMenuPane;
 import gui.StagePane;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -25,6 +26,7 @@ public class Main extends Application {
             primaryStage.setTitle("Game Start Menu");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
+            primaryStage.getIcons().add(new Image(ClassLoader.getSystemResource("Credits.png").toString()));
             primaryStage.show();
 
         } catch (Exception e) {

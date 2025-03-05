@@ -5,6 +5,7 @@ import java.util.Random;
 
 import ability.HealingPower;
 import ability.UltimatePower;
+import audio.SoundManager;
 import gui.EnemyPane;
 import gui.PlayerPane;
 
@@ -49,7 +50,8 @@ public class Pta extends Enemy implements UltimatePower, HealingPower {
 		this.setImmortal(true);
 		this.setImmorTalTurnCount(2);
 		dialogue += this.getName() + " is now Immortal for 2 turns!";
-
+        
+		SoundManager.playImmortalSound();
 		// update color after immortal
 		enemyPane.updateEnemyImmortal();
 

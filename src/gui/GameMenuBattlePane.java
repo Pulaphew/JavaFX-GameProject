@@ -3,6 +3,7 @@ package gui;
 import java.util.ArrayList;
 import java.util.Random;
 
+import audio.SoundManager;
 import entity.Enemy;
 import entity.Narang;
 import entity.Player;
@@ -175,6 +176,8 @@ public class GameMenuBattlePane extends Pane {
 			// game or finishing the battle
 			returnToGameMenu();
 		}
+		
+		SoundManager.playDialogueSound();
 
 		// Set the mouse click event again to advance the dialogue
 		Scene scene = this.getScene();
@@ -230,6 +233,8 @@ public class GameMenuBattlePane extends Pane {
 
 		// if animation finish , return to game menu
 		slideAnimation.setOnFinished(e -> {
+		
+	       
 			PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 			delay.setOnFinished(ev -> {
 				pressA.setVisible(false);
@@ -281,6 +286,8 @@ public class GameMenuBattlePane extends Pane {
 		playerPane.animationPlayerAction();
 
 		enemyPane.setEnemySprite(enemy.getTakeDamage_img());
+		
+		SoundManager.playAttackSound();
 
 		PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
 		delay.setOnFinished(e -> {
@@ -339,11 +346,12 @@ public class GameMenuBattlePane extends Pane {
 
 		playerPane.setPlayerSprite(image_path_player_attack);
 		playerPane.animationPlayerAction();
+		SoundManager.playUltimateSound();
 
 		String[] allDialogue = dialogues.toArray(new String[0]);
 
 		switchToDialogue(allDialogue);
-
+		
 		Scene scene = this.getScene();
 		if (scene != null) {
 			scene.setOnMouseClicked(e -> gameLogic.onPlayerAttackCompletes());
@@ -366,6 +374,7 @@ public class GameMenuBattlePane extends Pane {
 			if (rand.nextInt(10) < 8) {
 				dialogues.add(player.heal());
 				playerPane.updateHealthBar();
+				SoundManager.playHealingSound();
 			}
 
 			// skip enemy attack and return to game menu

@@ -34,7 +34,6 @@ public class Natchan extends Enemy implements HealingPower {
 
 		int healingChance = rand.nextInt(20);
 
-		// 35 % chance to increase healing counter
 		if (healingChance < 10) {
 			HealingCounter++;
 		}
@@ -59,7 +58,7 @@ public class Natchan extends Enemy implements HealingPower {
 		// healing from maxHealth 1 in 5 (20%)
 		int healAmount = this.getMaxHealth() / 5;
 		// healing ultimate heal 50%
-		if (HealingUltimateCharge == 3) {
+		if (HealingUltimateCharge == 5) {
 			isUltimate = true;
 			healAmount = this.getMaxHealth() / 2;
 		}

@@ -1,5 +1,6 @@
 package gui;
 
+import audio.SoundManager;
 import entity.Enemy;
 import entity.Narang;
 import entity.Pta;
@@ -31,6 +32,7 @@ public class StagePane extends AnchorPane {
 	
 	public StagePane(Stage primaryStage) {
 		this.setPrefSize(1360, 768);
+		SoundManager.playBackgroundMusic("/hypeboy.mp3" ,0.1);
 
 		backgroundImage = new ImageView();
 		backgroundImage.setImage(new Image(backgroundImagePath));
@@ -55,19 +57,25 @@ public class StagePane extends AnchorPane {
 		stageOne.setPrefSize(100, 100);
 		GuiStyle.styleStageButton(stageOne);
 		GuiStyle.addHoverEffect(stageOne);
-		stageOne.setOnAction(e -> SceneController.switchToGameScene(primaryStage, "Natchan"));
+		stageOne.setOnAction(e -> {
+            SoundManager.playClickSound();
+            SceneController.switchToGameScene(primaryStage, "Natchan");});
 
 		stageTwo = new Button("2");
 		stageTwo.setPrefSize(100, 100);
 		GuiStyle.styleStageButton(stageTwo);
 		GuiStyle.addHoverEffect(stageTwo);
-		stageTwo.setOnAction(e -> SceneController.switchToGameScene(primaryStage, "Narang"));
+		stageTwo.setOnAction(e -> {
+            SoundManager.playClickSound();
+            SceneController.switchToGameScene(primaryStage, "Narang");});
 
 		stageThree = new Button("3");
 		stageThree.setPrefSize(100, 100);
 		GuiStyle.styleStageButton(stageThree);
 		GuiStyle.addHoverEffect(stageThree);
-		stageThree.setOnAction(e -> SceneController.switchToGameScene(primaryStage, "Pta"));
+		stageThree.setOnAction(e -> {
+            SoundManager.playClickSound();
+            SceneController.switchToGameScene(primaryStage, "Pta");});
 
 		backButton = new Button("Back");
 		backButton.setPrefSize(175, 70);
@@ -77,7 +85,9 @@ public class StagePane extends AnchorPane {
 		GuiStyle.styleCroissantButton(backButton,200);
 		GuiStyle.addHoverEffect(backButton);
 		//action
-		backButton.setOnAction(e -> SceneController.switchToGameStartMenu(primaryStage));
+		backButton.setOnAction(e -> {
+            SoundManager.playClickSound();
+            SceneController.switchToGameStartMenu(primaryStage);});
 		
 		buttonContainer.getChildren().addAll(stageOne, stageTwo, stageThree);
 

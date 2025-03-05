@@ -42,7 +42,7 @@ public class Player extends Entity implements UltimatePower, HealingPower {
 		double chanceAttackHit = rand.nextDouble();
 
 		// have a chance 4/5 (80%) to attackHit
-		if (chanceAttackHit < 0.9) {
+		if (chanceAttackHit < 1) {
 			double successCriticalHit = rand.nextDouble();
 			double failCriticalHit = rand.nextDouble();
 			if (successCriticalHit > failCriticalHit) {
@@ -69,7 +69,7 @@ public class Player extends Entity implements UltimatePower, HealingPower {
 
 			// double failUltimateCharge = rand.nextInt(7);
 			double successUltimateCharge = rand.nextInt(10);
-			if (successUltimateCharge > 2) {
+			if (successUltimateCharge > 0) {
 				if (this.ultimateTurnCount < 5)
 					this.ultimateTurnCount++;
 			}

@@ -1,5 +1,6 @@
 package gui;
 
+import audio.SoundManager;
 import gamelogic.SceneController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,103 +16,114 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameStartMenuPane extends StackPane {
-    public GameStartMenuPane(Stage primaryStage, Runnable onStartGame) {
-        // พื้นหลัง
-        ImageView background = new ImageView(new Image(ClassLoader.getSystemResource("startMenu.png").toString()));
-        background.setFitWidth(1360);
-        background.setFitHeight(768);
+	public GameStartMenuPane(Stage primaryStage, Runnable onStartGame) {
+		// พื้นหลัง
+		ImageView background = new ImageView(new Image(ClassLoader.getSystemResource("startMenu.png").toString()));
+		background.setFitWidth(1360);
+		background.setFitHeight(768);
+		SoundManager.playBackgroundMusic("/hypeboy.mp3", 0.1);
+		// ปุ่มต่างๆ
+		Button startButton = new Button("StartGame");
+		GuiStyle.styleCroissantButton(startButton, 200);
 
-        // ปุ่มต่างๆ
-        Button startButton = new Button("StartGame");
-        GuiStyle.styleCroissantButton(startButton,200);
+		Button tutorialButton = new Button("Tutorial");
+		GuiStyle.styleCroissantButton(tutorialButton, 200);
 
-        Button tutorialButton = new Button("Tutorial");
-        GuiStyle.styleCroissantButton(tutorialButton,200);
+		Button exitButton = new Button("Exit");
+		GuiStyle.styleCroissantButton(exitButton, 200);
 
-        Button exitButton = new Button("Exit");
-        GuiStyle.styleCroissantButton(exitButton,200);
+		startButton.setOnAction(e -> {
+			SoundManager.playClickSound(); // เล่นเสียงเมื่อคลิก
+			onStartGame.run(); // เรียกใช้งานเมื่อคลิก
+		});
 
-        startButton.setOnAction(e -> onStartGame.run());
-        tutorialButton.setOnAction(e -> SceneController.switchToTutorial(primaryStage));
-        exitButton.setOnAction(e -> primaryStage.close());
+		tutorialButton.setOnAction(e -> {
+			SoundManager.playClickSound(); // เล่นเสียงเมื่อคลิก
+			SceneController.switchToTutorial(primaryStage); // สลับไปยังหน้า Tutorial
+		});
 
-        // ปุ่มเครดิต
-        Button infoButton = new Button();
-        ImageView creditImage = new ImageView(new Image(ClassLoader.getSystemResource("Credits.png").toString()));
+		exitButton.setOnAction(e -> {
+			SoundManager.playClickSound(); // เล่นเสียงเมื่อคลิก
+			primaryStage.close(); // ปิดโปรแกรม
+		});
 
-        creditImage.setFitWidth(100);  
-        creditImage.setPreserveRatio(true);
+		// ปุ่มเครดิต
+		Button infoButton = new Button();
+		ImageView creditImage = new ImageView(new Image(ClassLoader.getSystemResource("Credits.png").toString()));
 
-        infoButton.setGraphic(creditImage);
-        infoButton.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-width: 0;");
+		creditImage.setFitWidth(100);
+		creditImage.setPreserveRatio(true);
 
-        infoButton.setOnAction(e -> showCredits());
+		infoButton.setGraphic(creditImage);
+		infoButton.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-width: 0;");
 
-        // ตำแหน่งของปุ่มเครดิต
-        infoButton.setTranslateX(600);
-        infoButton.setTranslateY(320);
+		infoButton.setOnAction(e -> showCredits());
 
-        // เอฟเฟกต์ Hover
-        GuiStyle.addHoverEffect(startButton);
-        GuiStyle.addHoverEffect(tutorialButton);
-        GuiStyle.addHoverEffect(exitButton);
+		// ตำแหน่งของปุ่มเครดิต
+		infoButton.setTranslateX(600);
+		infoButton.setTranslateY(320);
 
-        VBox menuBox = new VBox(1, startButton, tutorialButton, exitButton);
-        menuBox.setAlignment(Pos.CENTER_LEFT);
-        menuBox.setTranslateX(170);
-        menuBox.setTranslateY(120); // Moves it down by 50 pixels
-        getChildren().addAll(background, menuBox, infoButton);
-    }
+		// เอฟเฟกต์ Hover
+		GuiStyle.addHoverEffect(startButton);
+		GuiStyle.addHoverEffect(tutorialButton);
+		GuiStyle.addHoverEffect(exitButton);
 
-    private void showCredits() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Credits");
-        alert.setHeaderText("🎮 ผู้พัฒนาเกม 🎮");
+		VBox menuBox = new VBox(1, startButton, tutorialButton, exitButton);
+		menuBox.setAlignment(Pos.CENTER_LEFT);
+		menuBox.setTranslateX(170);
+		menuBox.setTranslateY(120); // Moves it down by 50 pixels
+		getChildren().addAll(background, menuBox, infoButton);
+	}
 
-        // GridPane สำหรับข้อมูลผู้พัฒนา
-        GridPane grid = new GridPane();
-        grid.setHgap(30);
-        grid.setVgap(20);
-        grid.setAlignment(Pos.CENTER);
+	private void showCredits() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Credits");
+		alert.setHeaderText("🎮 Game Developer 🎮");
 
-        // ข้อมูลผู้พัฒนา
-        String credit_image_path = ClassLoader.getSystemResource("exsax.png").toString();
-        Developer[] developers = {
-            new Developer("Pula - kun", "6733154321", "Developer", credit_image_path),
-            new Developer("Tong - kun", "6733257321", "Developer", credit_image_path),
-            new Developer("Yodsaran Chaipakdee", "6733213721", "Developer", credit_image_path)
-        };
+		// GridPane สำหรับข้อมูลผู้พัฒนา
+		GridPane grid = new GridPane();
+		grid.setHgap(30);
+		grid.setVgap(20);
+		grid.setAlignment(Pos.CENTER);
 
-        // เพิ่มข้อมูลผู้พัฒนาเข้า GridPane
-        for (int i = 0; i < developers.length; i++) {
-            Developer dev = developers[i];
+		// ข้อมูลผู้พัฒนา
+		String credit_image_path = ClassLoader.getSystemResource("exsax.png").toString();
+		Developer[] developers = {
+				new Developer("Punyapat Phewkham", "6733154321", "Developer/Graphic Design", credit_image_path),
+				new Developer("Siwakorn KaewSaad", "6733257321", "Developer/Game Balance", credit_image_path),
+				new Developer("Yodsaran Chaipakdee", "6733213721", "Developer/Sound Design", credit_image_path) };
 
-            ImageView imageView = new ImageView(new Image(dev.imagePath));
-            imageView.setFitWidth(80);
-            imageView.setPreserveRatio(true);
+		// เพิ่มข้อมูลผู้พัฒนาเข้า GridPane
+		for (int i = 0; i < developers.length; i++) {
+			Developer dev = developers[i];
 
-            Label nameLabel = new Label("Name: " + dev.name);
-            Label idLabel = new Label("StudentID: " + dev.studentID);
-            Label roleLabel = new Label("Role: " + dev.role);
+			ImageView imageView = new ImageView(new Image(dev.imagePath));
+			imageView.setFitWidth(80);
+			imageView.setPreserveRatio(true);
 
-            VBox devBox = new VBox(5, imageView, nameLabel, idLabel, roleLabel);
-            devBox.setAlignment(Pos.CENTER);
-            
-            grid.add(devBox, i, 0);
-        }
+			Label nameLabel = new Label("Name: " + dev.name);
+			Label idLabel = new Label("StudentID: " + dev.studentID);
+			Label roleLabel = new Label("Role: " + dev.role);
 
-        alert.getDialogPane().setContent(grid);
-        alert.showAndWait();
-    }
+			VBox devBox = new VBox(5, imageView, nameLabel, idLabel, roleLabel);
+			devBox.setAlignment(Pos.CENTER);
 
-    // คลาส Developer สำหรับเก็บข้อมูลผู้พัฒนา
-    static class Developer {
-        String name, studentID, role, imagePath;
-        Developer(String name, String studentID, String role, String imagePath) {
-            this.name = name;
-            this.studentID = studentID;
-            this.role = role;
-            this.imagePath = imagePath;
-        }
-    }
+			grid.add(devBox, i, 0);
+		}
+
+		alert.getDialogPane().setContent(grid);
+		alert.showAndWait();
+	}
+
+	// คลาส Developer สำหรับเก็บข้อมูลผู้พัฒนา
+	static class Developer {
+		String name, studentID, role, imagePath;
+
+		Developer(String name, String studentID, String role, String imagePath) {
+			this.name = name;
+			this.studentID = studentID;
+			this.role = role;
+			this.imagePath = imagePath;
+		}
+	}
 }

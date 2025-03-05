@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ability.PoisonousPower;
+import audio.SoundManager;
 import gui.EnemyPane;
 import gui.PlayerPane;
 import javafx.scene.effect.ColorAdjust;
@@ -76,6 +77,7 @@ public class Narang extends Enemy implements PoisonousPower {
 		
 		// make player poisoned
 		player.applyPoison();
+		SoundManager.playPoisonSound();
 	}
 
 	// Getter & Setter

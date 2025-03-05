@@ -3,6 +3,7 @@ package gamelogic;
 import java.util.ArrayList;
 
 import ability.UltimatePower;
+import audio.SoundManager;
 import entity.Enemy;
 import entity.Narang;
 import entity.Natchan;
@@ -134,8 +135,13 @@ public class GameLogic {
 
     private void endGame(boolean playerWins) {
         // Mark the current enemy as defeated
+    	if (!playerWins) {
+            SoundManager.playLoseSound();
+        }
+    	
     	if(playerWins && !defeatedEnemies.contains(enemy)) {
     		defeatedEnemies.add(enemy);
+    		SoundManager.playWinningSound();
     	}
         SceneController.showEndGameScreen(gameBattlePane, primaryStage, playerWins);
     }

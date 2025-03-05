@@ -1,5 +1,6 @@
 package gui;
 
+import audio.SoundManager;
 import gamelogic.SceneController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -90,7 +91,9 @@ public class TutorialPane extends AnchorPane {
 		Button backButton = new Button("BACK");
 		GuiStyle.styleCroissantButton(backButton, 200);
 		GuiStyle.addHoverEffect(backButton);
-		backButton.setOnAction(e -> SceneController.switchToGameStartMenu(primaryStage));
+		backButton.setOnAction(e -> {
+            SoundManager.playClickSound();
+            SceneController.switchToGameStartMenu(primaryStage);});
 		AnchorPane.setBottomAnchor(backButton, 20.0);
 		AnchorPane.setLeftAnchor(backButton, 20.0);
 
@@ -131,8 +134,12 @@ public class TutorialPane extends AnchorPane {
 		VBox.setMargin(imageContainer, new Insets(0, 0, 0, 50));
 
 		// Button actions
-		prevButton.setOnAction(e -> navigate(-1));
-		nextButton.setOnAction(e -> navigate(1));
+		prevButton.setOnAction(e -> {
+            SoundManager.playClickSound();
+            navigate(-1);});
+		nextButton.setOnAction(e -> {
+            SoundManager.playClickSound();
+            navigate(1);});
 
 		// set image background
 		Image background = new Image(image_background);

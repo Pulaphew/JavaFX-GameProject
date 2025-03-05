@@ -1,6 +1,7 @@
 package gui;
 
 
+import audio.SoundManager;
 import entity.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -85,7 +86,7 @@ public class PlayerPane extends EntityPane{
 		moveBackward.setByX(-50); // move to left
 		moveBackward.setAutoReverse(true);
 		moveBackward.setCycleCount(2); // move left then back
-
+		SoundManager.playDamageSound();
 		// reset position after play animation
 		moveBackward.setOnFinished(e -> this.setTranslateX(0));
 

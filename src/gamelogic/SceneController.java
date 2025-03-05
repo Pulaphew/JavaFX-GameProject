@@ -1,5 +1,6 @@
 package gamelogic;
 
+import audio.SoundManager;
 import entity.Enemy;
 import entity.Natchan;
 import entity.Narang;
@@ -102,7 +103,7 @@ public class SceneController {
 		endGamePane.setAlignment(Pos.CENTER); // Center contents
 
 		// Victory or Defeat message
-		String message = playerWins ? "You Win!" : "You Lose!";
+		String message = playerWins ? "You Win!" : "You Lost!";
 		Text endGameText = new Text(message);
 		endGameText.setStyle("-fx-font-size: 50px; -fx-font-weight: bold; -fx-fill: white;");
 
@@ -112,7 +113,9 @@ public class SceneController {
 		returnButton.setStyle("-fx-font-size: 20px;");
 		GuiStyle.styleCroissantButton(returnButton, 200);
 		GuiStyle.addHoverEffect(returnButton);
-		returnButton.setOnAction(e -> primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768)));
+		returnButton.setOnAction(e -> {SoundManager.playClickSound();
+		
+		primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768));});
 
 		// Add components to the VBox
 		endGamePane.getChildren().addAll(endGameText, returnButton);
@@ -162,7 +165,8 @@ public class SceneController {
 		continueButton.setStyle("-fx-font-size: 20px;");
 		GuiStyle.styleCroissantButton(continueButton, 150);
 		GuiStyle.addHoverEffect(continueButton);
-		continueButton.setOnAction(e -> gameBattlePane.getChildren().remove(surrenderPane));
+		continueButton.setOnAction(e -> {SoundManager.playClickSound();
+        gameBattlePane.getChildren().remove(surrenderPane);});
 
 		// Surrender Button (go back to StagePane)
 		Button surrenderButton = new Button("Surrender");
@@ -172,7 +176,9 @@ public class SceneController {
 		surrenderButton.setStyle("-fx-font-size: 20px;");
 		GuiStyle.styleCroissantButton(surrenderButton, 150);
 		GuiStyle.addHoverEffect(surrenderButton);
-		surrenderButton.setOnAction(e -> primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768)));
+		surrenderButton.setOnAction(e -> {SoundManager.playClickSound();
+		
+		primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768));});
 
 		// Add components to the pane
 		surrenderPane.getChildren().addAll(background, confirmText, continueButton, surrenderButton);

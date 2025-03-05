@@ -1,5 +1,6 @@
 package gui;
 
+import audio.SoundManager;
 import gamelogic.SceneController;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -22,6 +23,7 @@ public class GameBattlePane extends AnchorPane {
         this.gameMenuBattlePane = gameMenuBattlePane;
 
         this.setPrefSize(1360, 768);
+        SoundManager.playBackgroundMusic("/msbg.mp3", 0.2);
 
         // Pane for background
         Pane backgroundPane = new Pane();
@@ -45,6 +47,7 @@ public class GameBattlePane extends AnchorPane {
 
         // Action for surrender button
         surrenderButton.setOnAction(e -> {
+        	SoundManager.playClickSound();
             if (!isConfirmationOpen) { 
                 isConfirmationOpen = true; 
                 SceneController.showSurrenderConfirmation((Stage)this.getScene().getWindow(), this);
