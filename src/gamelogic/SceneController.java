@@ -179,9 +179,10 @@ public class SceneController {
 		surrenderButton.setStyle("-fx-font-size: 20px;");
 		GuiStyle.styleCroissantButton(surrenderButton, 150);
 		GuiStyle.addHoverEffect(surrenderButton);
-		surrenderButton.setOnAction(e -> {SoundManager.playClickSound();
-		
-		primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768));});
+		surrenderButton.setOnAction(e -> {
+			GameBattlePane.setConfirmationOpen(false);
+			SoundManager.playClickSound();
+			primaryStage.setScene(new Scene(new StagePane(primaryStage), 1360, 768));});
 
 		// Add components to the pane
 		surrenderPane.getChildren().addAll(background, confirmText, continueButton, surrenderButton);
