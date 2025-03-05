@@ -27,13 +27,6 @@ public class DialogueGameBattlePane extends Pane {
         this.dialogue.setStroke(Color.BLACK);
         this.dialogue.setStrokeWidth(1);
 
-        // Add a glowing effect
-//        DropShadow glowEffect = new DropShadow();
-//        glowEffect.setColor(Color.YELLOW);
-//        glowEffect.setRadius(10);
-//        glowEffect.setSpread(0.2);
-//        this.dialogue.setEffect(glowEffect);
-
         // Set text position and wrapping
         this.dialogue.setLayoutX(50);
         this.dialogue.setLayoutY(100);

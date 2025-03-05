@@ -116,7 +116,7 @@ public class GameStartMenuPane extends StackPane {
 	}
 
 	// คลาส Developer สำหรับเก็บข้อมูลผู้พัฒนา
-	static class Developer {
+	public static class Developer {
 		String name, studentID, role, imagePath;
 
 		Developer(String name, String studentID, String role, String imagePath) {

@@ -15,7 +15,7 @@ import javafx.util.Duration;
 public class PlayerPane extends EntityPane{
 	
 	private ImageView playerSprite ;
-	private Rectangle playerHeathBarGreen ;
+	private Rectangle playerHearthBarGreen ;
 	private Player player ;
 	
 	public PlayerPane(Player player) {
@@ -36,21 +36,21 @@ public class PlayerPane extends EntityPane{
 		playerHeathBarRed.setLayoutY(210);
 		
 		//green show current hp
-		playerHeathBarGreen = new Rectangle(250,20) ;
-		playerHeathBarGreen.setFill(Color.GREEN);
-		playerHeathBarGreen.setLayoutX(0);
-		playerHeathBarGreen.setLayoutY(210);
+		playerHearthBarGreen = new Rectangle(250,20) ;
+		playerHearthBarGreen.setFill(Color.GREEN);
+		playerHearthBarGreen.setLayoutX(0);
+		playerHearthBarGreen.setLayoutY(210);
 		
 		//edit image here
 		String image_path = ClassLoader.getSystemResource("PlayerBattle.png").toString();
 		playerSprite.setImage(new Image(image_path)) ;
-		this.getChildren().addAll(playerSprite,playerHeathBarRed,playerHeathBarGreen) ;
+		this.getChildren().addAll(playerSprite,playerHeathBarRed,playerHearthBarGreen) ;
 	}
 	
 	public void updateHealthBar() {
 		double healthPercentage = (double) player.getCurrentHealth() / player.getMaxHealth() ;
 		double targetWidth = 250 * healthPercentage ;
-		double currentWidth = playerHeathBarGreen.getWidth();
+		double currentWidth = playerHearthBarGreen.getWidth();
 		
 		// Timeline for smooth transition of health bar width
         Timeline timeline = new Timeline();
@@ -60,7 +60,7 @@ public class PlayerPane extends EntityPane{
         for (int i = 0; i <= 30; i++) {
             double finalStep = step * i;
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.01 * i), e -> {
-                playerHeathBarGreen.setWidth(currentWidth + finalStep);
+            	playerHearthBarGreen.setWidth(currentWidth + finalStep);
             });
             timeline.getKeyFrames().add(keyFrame);
         }

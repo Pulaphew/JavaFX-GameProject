@@ -15,7 +15,7 @@ import javafx.util.Duration;
 public class EnemyPane extends EntityPane {
 	
 	private ImageView enemySprite;
-	private Rectangle enemyHeathBarGreen ;
+	private Rectangle enemyHearthBarGreen ;
 	private Enemy enemy ;
 	
 	public EnemyPane(Enemy enemy) {
@@ -37,22 +37,22 @@ public class EnemyPane extends EntityPane {
 		enemyHeathBarRed.setLayoutY(210);
 		
 		//green show current hp
-		enemyHeathBarGreen = new Rectangle(250,20) ;
-		enemyHeathBarGreen.setFill(Color.GREEN);
-		enemyHeathBarGreen.setLayoutX(0);
-		enemyHeathBarGreen.setLayoutY(210);
+		enemyHearthBarGreen = new Rectangle(250,20) ;
+		enemyHearthBarGreen.setFill(Color.GREEN);
+		enemyHearthBarGreen.setLayoutX(0);
+		enemyHearthBarGreen.setLayoutY(210);
 		
 		//edit image here
 //		String image_path = ClassLoader.getSystemResource("playerTest.jpg").toString() ;
 		enemySprite.setImage(new Image(enemy.getBattle_img())) ;
-		this.getChildren().addAll(enemySprite,enemyHeathBarRed,enemyHeathBarGreen) ;
+		this.getChildren().addAll(enemySprite,enemyHeathBarRed,enemyHearthBarGreen) ;
 	}
 	
 	// set width of health bar after take damage
 	public void updateHealthBar() {
 		double healthPercentage = (double) enemy.getCurrentHealth() / enemy.getMaxHealth() ;
 		double targetWidth = 250 * healthPercentage ;
-		double currentWidth = enemyHeathBarGreen.getWidth();
+		double currentWidth = enemyHearthBarGreen.getWidth();
 		
 		// Timeline for smooth transition of health bar width
         Timeline timeline = new Timeline();
@@ -62,7 +62,7 @@ public class EnemyPane extends EntityPane {
         for (int i = 0; i <= 30; i++) {
             double finalStep = step * i;
             KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.01 * i), e -> {
-                enemyHeathBarGreen.setWidth(currentWidth + finalStep);
+                enemyHearthBarGreen.setWidth(currentWidth + finalStep);
             });
             timeline.getKeyFrames().add(keyFrame);
         }
@@ -80,11 +80,11 @@ public class EnemyPane extends EntityPane {
 				colorAdjust.setSaturation(0.3); // Saturation value (30% increase in saturation)
 				colorAdjust.setBrightness(0);  // No change in brightness
 				enemySprite.setEffect(colorAdjust);
-				enemyHeathBarGreen.setFill(Color.YELLOW);
+				enemyHearthBarGreen.setFill(Color.YELLOW);
 			}
 			else {
 				enemySprite.setEffect(null);
-				enemyHeathBarGreen.setFill(Color.GREEN);
+				enemyHearthBarGreen.setFill(Color.GREEN);
 			}
 		}
 	}
