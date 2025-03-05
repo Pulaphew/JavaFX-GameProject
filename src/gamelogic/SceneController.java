@@ -190,7 +190,4 @@ public class SceneController {
 		gameBattlePane.getChildren().add(surrenderPane);
 	}
 
-	public static Enemy getEnemy() {
-		return enemy;
-	}
 }

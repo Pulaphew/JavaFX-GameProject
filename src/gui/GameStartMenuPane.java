@@ -46,7 +46,8 @@ public class GameStartMenuPane extends StackPane {
 			SoundManager.playClickSound(); // เล่นเสียงเมื่อคลิก
 			primaryStage.close(); // ปิดโปรแกรม
 		});
-
+		
+		
 		// ปุ่มเครดิต
 		Button infoButton = new Button();
 		ImageView creditImage = new ImageView(new Image(ClassLoader.getSystemResource("Credits.png").toString()));
